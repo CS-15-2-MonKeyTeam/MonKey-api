@@ -6,6 +6,7 @@ type Query {
 
 type Mutation {
   auth(accountkitAccessToken: String!, name: String): AuthPayload!
+  updateProfile(name: String): User!
 }
 
 type AuthPayload {

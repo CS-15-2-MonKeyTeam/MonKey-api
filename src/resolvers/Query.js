@@ -7,4 +7,4 @@ const Query = {
   }
 };
 
-module.exports = { Query };
+module.exports = Query;
