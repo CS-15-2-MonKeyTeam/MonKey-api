@@ -5,7 +5,7 @@ type Query {
 }
 
 type Mutation {
-  auth(accountkitAccessToken: String!): AuthPayload!
+  auth(accountkitAccessToken: String!, name: String): AuthPayload!
 }
 
 type AuthPayload {

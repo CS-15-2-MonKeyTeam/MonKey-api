@@ -4,7 +4,7 @@ const axios = require('axios');
 const { ACCOUNT_KIT_API_URL } = require('../../constants');
 
 const auth = {
-  async auth(parent, { accountkitAccessToken }, ctx, info) {
+  async auth(parent, { accountkitAccessToken, name }, ctx, info) {
     let account;
     try {
       const resp = await axios.get(
@@ -28,7 +28,7 @@ const auth = {
 
     if (!user) {
       user = await ctx.db.mutation.createUser({
-        data: { phone }
+        data: { phone, name }
       });
     }
 

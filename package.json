@@ -10,7 +10,8 @@
     "start": "node src/index.js",
     "debug": "nodemon -e js,graphql -x node --inspect -r dotenv/config src/index.js",
     "playground": "graphql playground",
-    "dev": "npm-run-all --parallel start playground"
+    "startdev": "nodemon -e js,graphql -x node -r dotenv/config src/index.js",
+    "dev": "npm-run-all --parallel startdev playground"
   },
   "dependencies": {
     "axios": "^0.18.0",
