@@ -1,0 +1,14 @@
+# import User from "./generated/prisma.graphql"
+
+type Query {
+  me: User
+}
+
+type Mutation {
+  auth(accountkitAccessToken: String!): AuthPayload!
+}
+
+type AuthPayload {
+  token: String!
+  user: User!
+}

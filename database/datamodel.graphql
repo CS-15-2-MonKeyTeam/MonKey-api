@@ -1,0 +1,7 @@
+type User {
+  id: ID! @unique
+  phone: String! @unique
+  # country: String!
+  # language: String!
+  # currency: String!
+}
