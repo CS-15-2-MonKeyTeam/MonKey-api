@@ -1,12 +1,19 @@
 # import User from "./generated/prisma.graphql"
+# import Account from "./generated/prisma.graphql"
 
 type Query {
   me: User
+  accounts: [Account!]!
 }
 
 type Mutation {
   auth(accountkitAccessToken: String!, name: String): AuthPayload!
-  updateProfile(name: String): User!
+
+  updateProfile(name: String!): User!
+
+  createAccount(name: String!, balance: Float): Account!
+  deleteAccount(id: ID!): Account!
+  updateAccount(id: ID!, name: String!): Account!
 }
 
 type AuthPayload {

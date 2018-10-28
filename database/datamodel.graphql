@@ -38,7 +38,7 @@ type Expense {
   id: ID! @unique
   payee: String!
 
-  financeOperation: FinanceOperation! @relation(name: "ExpenseFinanceOperation", onDelete: CASCADE)
+  financeOperation: FinanceOperation! @relation(name: "ExpenseFinanceOperation")
   category: ExpenseCategory
 }
 
@@ -46,14 +46,14 @@ type Income {
   id: ID! @unique
   place: String!
 
-  financeOperation: FinanceOperation! @relation(name: "IncomeFinanceOperation", onDelete: CASCADE)
+  financeOperation: FinanceOperation! @relation(name: "IncomeFinanceOperation")
   category: IncomeCategory
 }
 
 type Transfer {
   id: ID! @unique
 
-  financeOperation: FinanceOperation! @relation(name: "TransferFinanceOperation", onDelete: CASCADE)
+  financeOperation: FinanceOperation! @relation(name: "TransferFinanceOperation")
   toAccount: Account!
 }
 
@@ -61,12 +61,12 @@ type IncomeCategory {
   id: ID! @unique
   name: String!
 
-  createdBy: User @relation(name: "IncomeCategoriesByUser", onDelete: SET_NULL)
+  createdBy: User @relation(name: "IncomeCategoriesByUser")
 }
 
 type ExpenseCategory {
   id: ID! @unique
   name: String!
 
-  createdBy: User @relation(name: "ExpenseCategoriesByUser", onDelete: SET_NULL)
+  createdBy: User @relation(name: "ExpenseCategoriesByUser")
 }
