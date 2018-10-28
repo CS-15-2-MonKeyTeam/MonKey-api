@@ -1,10 +1,10 @@
-const { getUserId } = require('../utils');
+const { getUserId } = require('../../utils');
 
-const Query = {
+const profile = {
   me(parent, args, ctx, info) {
     const id = getUserId(ctx);
     return ctx.db.query.user({ where: { id } }, info);
   }
 };
 
-module.exports = Query;
+module.exports = profile;
