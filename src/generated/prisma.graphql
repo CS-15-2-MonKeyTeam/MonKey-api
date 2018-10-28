@@ -1,5 +1,348 @@
 # source: https://monkey-prisma.herokuapp.com/monkey/dev
-# timestamp: Sun Oct 21 2018 20:03:06 GMT+0300 (Eastern European Summer Time)
+# timestamp: Sun Oct 28 2018 19:20:40 GMT+0200 (Eastern European Standard Time)
+
+type Account implements Node {
+  id: ID!
+  name: String!
+  balance: Float!
+  owner(where: UserWhereInput): User!
+  financeOperations(where: FinanceOperationWhereInput, orderBy: FinanceOperationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [FinanceOperation!]
+}
+
+"""A connection to a list of items."""
+type AccountConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [AccountEdge]!
+  aggregate: AggregateAccount!
+}
+
+input AccountCreateInput {
+  name: String!
+  balance: Float
+  owner: UserCreateOneWithoutAccountsInput!
+  financeOperations: FinanceOperationCreateManyWithoutAccountInput
+}
+
+input AccountCreateManyWithoutOwnerInput {
+  create: [AccountCreateWithoutOwnerInput!]
+  connect: [AccountWhereUniqueInput!]
+}
+
+input AccountCreateOneInput {
+  create: AccountCreateInput
+  connect: AccountWhereUniqueInput
+}
+
+input AccountCreateOneWithoutFinanceOperationsInput {
+  create: AccountCreateWithoutFinanceOperationsInput
+  connect: AccountWhereUniqueInput
+}
+
+input AccountCreateWithoutFinanceOperationsInput {
+  name: String!
+  balance: Float
+  owner: UserCreateOneWithoutAccountsInput!
+}
+
+input AccountCreateWithoutOwnerInput {
+  name: String!
+  balance: Float
+  financeOperations: FinanceOperationCreateManyWithoutAccountInput
+}
+
+"""An edge in a connection."""
+type AccountEdge {
+  """The item at the end of the edge."""
+  node: Account!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum AccountOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  balance_ASC
+  balance_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type AccountPreviousValues {
+  id: ID!
+  name: String!
+  balance: Float!
+}
+
+type AccountSubscriptionPayload {
+  mutation: MutationType!
+  node: Account
+  updatedFields: [String!]
+  previousValues: AccountPreviousValues
+}
+
+input AccountSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [AccountSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [AccountSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [AccountSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: AccountWhereInput
+}
+
+input AccountUpdateDataInput {
+  name: String
+  balance: Float
+  owner: UserUpdateOneWithoutAccountsInput
+  financeOperations: FinanceOperationUpdateManyWithoutAccountInput
+}
+
+input AccountUpdateInput {
+  name: String
+  balance: Float
+  owner: UserUpdateOneWithoutAccountsInput
+  financeOperations: FinanceOperationUpdateManyWithoutAccountInput
+}
+
+input AccountUpdateManyWithoutOwnerInput {
+  create: [AccountCreateWithoutOwnerInput!]
+  connect: [AccountWhereUniqueInput!]
+  disconnect: [AccountWhereUniqueInput!]
+  delete: [AccountWhereUniqueInput!]
+  update: [AccountUpdateWithWhereUniqueWithoutOwnerInput!]
+  upsert: [AccountUpsertWithWhereUniqueWithoutOwnerInput!]
+}
+
+input AccountUpdateOneInput {
+  create: AccountCreateInput
+  connect: AccountWhereUniqueInput
+  delete: Boolean
+  update: AccountUpdateDataInput
+  upsert: AccountUpsertNestedInput
+}
+
+input AccountUpdateOneWithoutFinanceOperationsInput {
+  create: AccountCreateWithoutFinanceOperationsInput
+  connect: AccountWhereUniqueInput
+  delete: Boolean
+  update: AccountUpdateWithoutFinanceOperationsDataInput
+  upsert: AccountUpsertWithoutFinanceOperationsInput
+}
+
+input AccountUpdateWithoutFinanceOperationsDataInput {
+  name: String
+  balance: Float
+  owner: UserUpdateOneWithoutAccountsInput
+}
+
+input AccountUpdateWithoutOwnerDataInput {
+  name: String
+  balance: Float
+  financeOperations: FinanceOperationUpdateManyWithoutAccountInput
+}
+
+input AccountUpdateWithWhereUniqueWithoutOwnerInput {
+  where: AccountWhereUniqueInput!
+  data: AccountUpdateWithoutOwnerDataInput!
+}
+
+input AccountUpsertNestedInput {
+  update: AccountUpdateDataInput!
+  create: AccountCreateInput!
+}
+
+input AccountUpsertWithoutFinanceOperationsInput {
+  update: AccountUpdateWithoutFinanceOperationsDataInput!
+  create: AccountCreateWithoutFinanceOperationsInput!
+}
+
+input AccountUpsertWithWhereUniqueWithoutOwnerInput {
+  where: AccountWhereUniqueInput!
+  update: AccountUpdateWithoutOwnerDataInput!
+  create: AccountCreateWithoutOwnerInput!
+}
+
+input AccountWhereInput {
+  """Logical AND on all given filters."""
+  AND: [AccountWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [AccountWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [AccountWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+  balance: Float
+
+  """All values that are not equal to given value."""
+  balance_not: Float
+
+  """All values that are contained in given list."""
+  balance_in: [Float!]
+
+  """All values that are not contained in given list."""
+  balance_not_in: [Float!]
+
+  """All values less than the given value."""
+  balance_lt: Float
+
+  """All values less than or equal the given value."""
+  balance_lte: Float
+
+  """All values greater than the given value."""
+  balance_gt: Float
+
+  """All values greater than or equal the given value."""
+  balance_gte: Float
+  owner: UserWhereInput
+  financeOperations_every: FinanceOperationWhereInput
+  financeOperations_some: FinanceOperationWhereInput
+  financeOperations_none: FinanceOperationWhereInput
+  _MagicalBackRelation_AccountToTransfer_every: TransferWhereInput
+  _MagicalBackRelation_AccountToTransfer_some: TransferWhereInput
+  _MagicalBackRelation_AccountToTransfer_none: TransferWhereInput
+}
+
+input AccountWhereUniqueInput {
+  id: ID
+}
+
+type AggregateAccount {
+  count: Int!
+}
+
+type AggregateExpense {
+  count: Int!
+}
+
+type AggregateExpenseCategory {
+  count: Int!
+}
+
+type AggregateFinanceOperation {
+  count: Int!
+}
+
+type AggregateIncome {
+  count: Int!
+}
+
+type AggregateIncomeCategory {
+  count: Int!
+}
+
+type AggregateTransfer {
+  count: Int!
+}
 
 type AggregateUser {
   count: Int!
@@ -10,6 +353,1400 @@ type BatchPayload {
   count: Long!
 }
 
+scalar DateTime
+
+type Expense implements Node {
+  id: ID!
+  payee: String!
+  financeOperation(where: FinanceOperationWhereInput): FinanceOperation!
+  category(where: ExpenseCategoryWhereInput): ExpenseCategory
+}
+
+type ExpenseCategory implements Node {
+  id: ID!
+  name: String!
+  createdBy(where: UserWhereInput): User
+}
+
+"""A connection to a list of items."""
+type ExpenseCategoryConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [ExpenseCategoryEdge]!
+  aggregate: AggregateExpenseCategory!
+}
+
+input ExpenseCategoryCreateInput {
+  name: String!
+  createdBy: UserCreateOneWithoutExpenseCategoriesInput
+}
+
+input ExpenseCategoryCreateManyWithoutCreatedByInput {
+  create: [ExpenseCategoryCreateWithoutCreatedByInput!]
+  connect: [ExpenseCategoryWhereUniqueInput!]
+}
+
+input ExpenseCategoryCreateOneInput {
+  create: ExpenseCategoryCreateInput
+  connect: ExpenseCategoryWhereUniqueInput
+}
+
+input ExpenseCategoryCreateWithoutCreatedByInput {
+  name: String!
+}
+
+"""An edge in a connection."""
+type ExpenseCategoryEdge {
+  """The item at the end of the edge."""
+  node: ExpenseCategory!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum ExpenseCategoryOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type ExpenseCategoryPreviousValues {
+  id: ID!
+  name: String!
+}
+
+type ExpenseCategorySubscriptionPayload {
+  mutation: MutationType!
+  node: ExpenseCategory
+  updatedFields: [String!]
+  previousValues: ExpenseCategoryPreviousValues
+}
+
+input ExpenseCategorySubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ExpenseCategorySubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ExpenseCategorySubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ExpenseCategorySubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: ExpenseCategoryWhereInput
+}
+
+input ExpenseCategoryUpdateDataInput {
+  name: String
+  createdBy: UserUpdateOneWithoutExpenseCategoriesInput
+}
+
+input ExpenseCategoryUpdateInput {
+  name: String
+  createdBy: UserUpdateOneWithoutExpenseCategoriesInput
+}
+
+input ExpenseCategoryUpdateManyWithoutCreatedByInput {
+  create: [ExpenseCategoryCreateWithoutCreatedByInput!]
+  connect: [ExpenseCategoryWhereUniqueInput!]
+  disconnect: [ExpenseCategoryWhereUniqueInput!]
+  delete: [ExpenseCategoryWhereUniqueInput!]
+  update: [ExpenseCategoryUpdateWithWhereUniqueWithoutCreatedByInput!]
+  upsert: [ExpenseCategoryUpsertWithWhereUniqueWithoutCreatedByInput!]
+}
+
+input ExpenseCategoryUpdateOneInput {
+  create: ExpenseCategoryCreateInput
+  connect: ExpenseCategoryWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: ExpenseCategoryUpdateDataInput
+  upsert: ExpenseCategoryUpsertNestedInput
+}
+
+input ExpenseCategoryUpdateWithoutCreatedByDataInput {
+  name: String
+}
+
+input ExpenseCategoryUpdateWithWhereUniqueWithoutCreatedByInput {
+  where: ExpenseCategoryWhereUniqueInput!
+  data: ExpenseCategoryUpdateWithoutCreatedByDataInput!
+}
+
+input ExpenseCategoryUpsertNestedInput {
+  update: ExpenseCategoryUpdateDataInput!
+  create: ExpenseCategoryCreateInput!
+}
+
+input ExpenseCategoryUpsertWithWhereUniqueWithoutCreatedByInput {
+  where: ExpenseCategoryWhereUniqueInput!
+  update: ExpenseCategoryUpdateWithoutCreatedByDataInput!
+  create: ExpenseCategoryCreateWithoutCreatedByInput!
+}
+
+input ExpenseCategoryWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ExpenseCategoryWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ExpenseCategoryWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ExpenseCategoryWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+  createdBy: UserWhereInput
+  _MagicalBackRelation_ExpenseToExpenseCategory_every: ExpenseWhereInput
+  _MagicalBackRelation_ExpenseToExpenseCategory_some: ExpenseWhereInput
+  _MagicalBackRelation_ExpenseToExpenseCategory_none: ExpenseWhereInput
+}
+
+input ExpenseCategoryWhereUniqueInput {
+  id: ID
+}
+
+"""A connection to a list of items."""
+type ExpenseConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [ExpenseEdge]!
+  aggregate: AggregateExpense!
+}
+
+input ExpenseCreateInput {
+  payee: String!
+  financeOperation: FinanceOperationCreateOneWithoutExpenseInput!
+  category: ExpenseCategoryCreateOneInput
+}
+
+input ExpenseCreateOneWithoutFinanceOperationInput {
+  create: ExpenseCreateWithoutFinanceOperationInput
+  connect: ExpenseWhereUniqueInput
+}
+
+input ExpenseCreateWithoutFinanceOperationInput {
+  payee: String!
+  category: ExpenseCategoryCreateOneInput
+}
+
+"""An edge in a connection."""
+type ExpenseEdge {
+  """The item at the end of the edge."""
+  node: Expense!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum ExpenseOrderByInput {
+  id_ASC
+  id_DESC
+  payee_ASC
+  payee_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type ExpensePreviousValues {
+  id: ID!
+  payee: String!
+}
+
+type ExpenseSubscriptionPayload {
+  mutation: MutationType!
+  node: Expense
+  updatedFields: [String!]
+  previousValues: ExpensePreviousValues
+}
+
+input ExpenseSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ExpenseSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ExpenseSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ExpenseSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: ExpenseWhereInput
+}
+
+input ExpenseUpdateInput {
+  payee: String
+  financeOperation: FinanceOperationUpdateOneWithoutExpenseInput
+  category: ExpenseCategoryUpdateOneInput
+}
+
+input ExpenseUpdateOneWithoutFinanceOperationInput {
+  create: ExpenseCreateWithoutFinanceOperationInput
+  connect: ExpenseWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: ExpenseUpdateWithoutFinanceOperationDataInput
+  upsert: ExpenseUpsertWithoutFinanceOperationInput
+}
+
+input ExpenseUpdateWithoutFinanceOperationDataInput {
+  payee: String
+  category: ExpenseCategoryUpdateOneInput
+}
+
+input ExpenseUpsertWithoutFinanceOperationInput {
+  update: ExpenseUpdateWithoutFinanceOperationDataInput!
+  create: ExpenseCreateWithoutFinanceOperationInput!
+}
+
+input ExpenseWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ExpenseWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ExpenseWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ExpenseWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  payee: String
+
+  """All values that are not equal to given value."""
+  payee_not: String
+
+  """All values that are contained in given list."""
+  payee_in: [String!]
+
+  """All values that are not contained in given list."""
+  payee_not_in: [String!]
+
+  """All values less than the given value."""
+  payee_lt: String
+
+  """All values less than or equal the given value."""
+  payee_lte: String
+
+  """All values greater than the given value."""
+  payee_gt: String
+
+  """All values greater than or equal the given value."""
+  payee_gte: String
+
+  """All values containing the given string."""
+  payee_contains: String
+
+  """All values not containing the given string."""
+  payee_not_contains: String
+
+  """All values starting with the given string."""
+  payee_starts_with: String
+
+  """All values not starting with the given string."""
+  payee_not_starts_with: String
+
+  """All values ending with the given string."""
+  payee_ends_with: String
+
+  """All values not ending with the given string."""
+  payee_not_ends_with: String
+  financeOperation: FinanceOperationWhereInput
+  category: ExpenseCategoryWhereInput
+}
+
+input ExpenseWhereUniqueInput {
+  id: ID
+}
+
+type FinanceOperation implements Node {
+  id: ID!
+  amount: Float!
+  date: DateTime!
+  comment: String
+  createdBy(where: UserWhereInput): User!
+  account(where: AccountWhereInput): Account!
+  expense(where: ExpenseWhereInput): Expense
+  income(where: IncomeWhereInput): Income
+  transfer(where: TransferWhereInput): Transfer
+}
+
+"""A connection to a list of items."""
+type FinanceOperationConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [FinanceOperationEdge]!
+  aggregate: AggregateFinanceOperation!
+}
+
+input FinanceOperationCreateInput {
+  amount: Float!
+  date: DateTime!
+  comment: String
+  createdBy: UserCreateOneWithoutFinanceOperationsInput!
+  account: AccountCreateOneWithoutFinanceOperationsInput!
+  expense: ExpenseCreateOneWithoutFinanceOperationInput
+  income: IncomeCreateOneWithoutFinanceOperationInput
+  transfer: TransferCreateOneWithoutFinanceOperationInput
+}
+
+input FinanceOperationCreateManyWithoutAccountInput {
+  create: [FinanceOperationCreateWithoutAccountInput!]
+  connect: [FinanceOperationWhereUniqueInput!]
+}
+
+input FinanceOperationCreateManyWithoutCreatedByInput {
+  create: [FinanceOperationCreateWithoutCreatedByInput!]
+  connect: [FinanceOperationWhereUniqueInput!]
+}
+
+input FinanceOperationCreateOneWithoutExpenseInput {
+  create: FinanceOperationCreateWithoutExpenseInput
+  connect: FinanceOperationWhereUniqueInput
+}
+
+input FinanceOperationCreateOneWithoutIncomeInput {
+  create: FinanceOperationCreateWithoutIncomeInput
+  connect: FinanceOperationWhereUniqueInput
+}
+
+input FinanceOperationCreateOneWithoutTransferInput {
+  create: FinanceOperationCreateWithoutTransferInput
+  connect: FinanceOperationWhereUniqueInput
+}
+
+input FinanceOperationCreateWithoutAccountInput {
+  amount: Float!
+  date: DateTime!
+  comment: String
+  createdBy: UserCreateOneWithoutFinanceOperationsInput!
+  expense: ExpenseCreateOneWithoutFinanceOperationInput
+  income: IncomeCreateOneWithoutFinanceOperationInput
+  transfer: TransferCreateOneWithoutFinanceOperationInput
+}
+
+input FinanceOperationCreateWithoutCreatedByInput {
+  amount: Float!
+  date: DateTime!
+  comment: String
+  account: AccountCreateOneWithoutFinanceOperationsInput!
+  expense: ExpenseCreateOneWithoutFinanceOperationInput
+  income: IncomeCreateOneWithoutFinanceOperationInput
+  transfer: TransferCreateOneWithoutFinanceOperationInput
+}
+
+input FinanceOperationCreateWithoutExpenseInput {
+  amount: Float!
+  date: DateTime!
+  comment: String
+  createdBy: UserCreateOneWithoutFinanceOperationsInput!
+  account: AccountCreateOneWithoutFinanceOperationsInput!
+  income: IncomeCreateOneWithoutFinanceOperationInput
+  transfer: TransferCreateOneWithoutFinanceOperationInput
+}
+
+input FinanceOperationCreateWithoutIncomeInput {
+  amount: Float!
+  date: DateTime!
+  comment: String
+  createdBy: UserCreateOneWithoutFinanceOperationsInput!
+  account: AccountCreateOneWithoutFinanceOperationsInput!
+  expense: ExpenseCreateOneWithoutFinanceOperationInput
+  transfer: TransferCreateOneWithoutFinanceOperationInput
+}
+
+input FinanceOperationCreateWithoutTransferInput {
+  amount: Float!
+  date: DateTime!
+  comment: String
+  createdBy: UserCreateOneWithoutFinanceOperationsInput!
+  account: AccountCreateOneWithoutFinanceOperationsInput!
+  expense: ExpenseCreateOneWithoutFinanceOperationInput
+  income: IncomeCreateOneWithoutFinanceOperationInput
+}
+
+"""An edge in a connection."""
+type FinanceOperationEdge {
+  """The item at the end of the edge."""
+  node: FinanceOperation!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum FinanceOperationOrderByInput {
+  id_ASC
+  id_DESC
+  amount_ASC
+  amount_DESC
+  date_ASC
+  date_DESC
+  comment_ASC
+  comment_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type FinanceOperationPreviousValues {
+  id: ID!
+  amount: Float!
+  date: DateTime!
+  comment: String
+}
+
+type FinanceOperationSubscriptionPayload {
+  mutation: MutationType!
+  node: FinanceOperation
+  updatedFields: [String!]
+  previousValues: FinanceOperationPreviousValues
+}
+
+input FinanceOperationSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [FinanceOperationSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [FinanceOperationSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [FinanceOperationSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: FinanceOperationWhereInput
+}
+
+input FinanceOperationUpdateInput {
+  amount: Float
+  date: DateTime
+  comment: String
+  createdBy: UserUpdateOneWithoutFinanceOperationsInput
+  account: AccountUpdateOneWithoutFinanceOperationsInput
+  expense: ExpenseUpdateOneWithoutFinanceOperationInput
+  income: IncomeUpdateOneWithoutFinanceOperationInput
+  transfer: TransferUpdateOneWithoutFinanceOperationInput
+}
+
+input FinanceOperationUpdateManyWithoutAccountInput {
+  create: [FinanceOperationCreateWithoutAccountInput!]
+  connect: [FinanceOperationWhereUniqueInput!]
+  disconnect: [FinanceOperationWhereUniqueInput!]
+  delete: [FinanceOperationWhereUniqueInput!]
+  update: [FinanceOperationUpdateWithWhereUniqueWithoutAccountInput!]
+  upsert: [FinanceOperationUpsertWithWhereUniqueWithoutAccountInput!]
+}
+
+input FinanceOperationUpdateManyWithoutCreatedByInput {
+  create: [FinanceOperationCreateWithoutCreatedByInput!]
+  connect: [FinanceOperationWhereUniqueInput!]
+  disconnect: [FinanceOperationWhereUniqueInput!]
+  delete: [FinanceOperationWhereUniqueInput!]
+  update: [FinanceOperationUpdateWithWhereUniqueWithoutCreatedByInput!]
+  upsert: [FinanceOperationUpsertWithWhereUniqueWithoutCreatedByInput!]
+}
+
+input FinanceOperationUpdateOneWithoutExpenseInput {
+  create: FinanceOperationCreateWithoutExpenseInput
+  connect: FinanceOperationWhereUniqueInput
+  delete: Boolean
+  update: FinanceOperationUpdateWithoutExpenseDataInput
+  upsert: FinanceOperationUpsertWithoutExpenseInput
+}
+
+input FinanceOperationUpdateOneWithoutIncomeInput {
+  create: FinanceOperationCreateWithoutIncomeInput
+  connect: FinanceOperationWhereUniqueInput
+  delete: Boolean
+  update: FinanceOperationUpdateWithoutIncomeDataInput
+  upsert: FinanceOperationUpsertWithoutIncomeInput
+}
+
+input FinanceOperationUpdateOneWithoutTransferInput {
+  create: FinanceOperationCreateWithoutTransferInput
+  connect: FinanceOperationWhereUniqueInput
+  delete: Boolean
+  update: FinanceOperationUpdateWithoutTransferDataInput
+  upsert: FinanceOperationUpsertWithoutTransferInput
+}
+
+input FinanceOperationUpdateWithoutAccountDataInput {
+  amount: Float
+  date: DateTime
+  comment: String
+  createdBy: UserUpdateOneWithoutFinanceOperationsInput
+  expense: ExpenseUpdateOneWithoutFinanceOperationInput
+  income: IncomeUpdateOneWithoutFinanceOperationInput
+  transfer: TransferUpdateOneWithoutFinanceOperationInput
+}
+
+input FinanceOperationUpdateWithoutCreatedByDataInput {
+  amount: Float
+  date: DateTime
+  comment: String
+  account: AccountUpdateOneWithoutFinanceOperationsInput
+  expense: ExpenseUpdateOneWithoutFinanceOperationInput
+  income: IncomeUpdateOneWithoutFinanceOperationInput
+  transfer: TransferUpdateOneWithoutFinanceOperationInput
+}
+
+input FinanceOperationUpdateWithoutExpenseDataInput {
+  amount: Float
+  date: DateTime
+  comment: String
+  createdBy: UserUpdateOneWithoutFinanceOperationsInput
+  account: AccountUpdateOneWithoutFinanceOperationsInput
+  income: IncomeUpdateOneWithoutFinanceOperationInput
+  transfer: TransferUpdateOneWithoutFinanceOperationInput
+}
+
+input FinanceOperationUpdateWithoutIncomeDataInput {
+  amount: Float
+  date: DateTime
+  comment: String
+  createdBy: UserUpdateOneWithoutFinanceOperationsInput
+  account: AccountUpdateOneWithoutFinanceOperationsInput
+  expense: ExpenseUpdateOneWithoutFinanceOperationInput
+  transfer: TransferUpdateOneWithoutFinanceOperationInput
+}
+
+input FinanceOperationUpdateWithoutTransferDataInput {
+  amount: Float
+  date: DateTime
+  comment: String
+  createdBy: UserUpdateOneWithoutFinanceOperationsInput
+  account: AccountUpdateOneWithoutFinanceOperationsInput
+  expense: ExpenseUpdateOneWithoutFinanceOperationInput
+  income: IncomeUpdateOneWithoutFinanceOperationInput
+}
+
+input FinanceOperationUpdateWithWhereUniqueWithoutAccountInput {
+  where: FinanceOperationWhereUniqueInput!
+  data: FinanceOperationUpdateWithoutAccountDataInput!
+}
+
+input FinanceOperationUpdateWithWhereUniqueWithoutCreatedByInput {
+  where: FinanceOperationWhereUniqueInput!
+  data: FinanceOperationUpdateWithoutCreatedByDataInput!
+}
+
+input FinanceOperationUpsertWithoutExpenseInput {
+  update: FinanceOperationUpdateWithoutExpenseDataInput!
+  create: FinanceOperationCreateWithoutExpenseInput!
+}
+
+input FinanceOperationUpsertWithoutIncomeInput {
+  update: FinanceOperationUpdateWithoutIncomeDataInput!
+  create: FinanceOperationCreateWithoutIncomeInput!
+}
+
+input FinanceOperationUpsertWithoutTransferInput {
+  update: FinanceOperationUpdateWithoutTransferDataInput!
+  create: FinanceOperationCreateWithoutTransferInput!
+}
+
+input FinanceOperationUpsertWithWhereUniqueWithoutAccountInput {
+  where: FinanceOperationWhereUniqueInput!
+  update: FinanceOperationUpdateWithoutAccountDataInput!
+  create: FinanceOperationCreateWithoutAccountInput!
+}
+
+input FinanceOperationUpsertWithWhereUniqueWithoutCreatedByInput {
+  where: FinanceOperationWhereUniqueInput!
+  update: FinanceOperationUpdateWithoutCreatedByDataInput!
+  create: FinanceOperationCreateWithoutCreatedByInput!
+}
+
+input FinanceOperationWhereInput {
+  """Logical AND on all given filters."""
+  AND: [FinanceOperationWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [FinanceOperationWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [FinanceOperationWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  amount: Float
+
+  """All values that are not equal to given value."""
+  amount_not: Float
+
+  """All values that are contained in given list."""
+  amount_in: [Float!]
+
+  """All values that are not contained in given list."""
+  amount_not_in: [Float!]
+
+  """All values less than the given value."""
+  amount_lt: Float
+
+  """All values less than or equal the given value."""
+  amount_lte: Float
+
+  """All values greater than the given value."""
+  amount_gt: Float
+
+  """All values greater than or equal the given value."""
+  amount_gte: Float
+  date: DateTime
+
+  """All values that are not equal to given value."""
+  date_not: DateTime
+
+  """All values that are contained in given list."""
+  date_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  date_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  date_lt: DateTime
+
+  """All values less than or equal the given value."""
+  date_lte: DateTime
+
+  """All values greater than the given value."""
+  date_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  date_gte: DateTime
+  comment: String
+
+  """All values that are not equal to given value."""
+  comment_not: String
+
+  """All values that are contained in given list."""
+  comment_in: [String!]
+
+  """All values that are not contained in given list."""
+  comment_not_in: [String!]
+
+  """All values less than the given value."""
+  comment_lt: String
+
+  """All values less than or equal the given value."""
+  comment_lte: String
+
+  """All values greater than the given value."""
+  comment_gt: String
+
+  """All values greater than or equal the given value."""
+  comment_gte: String
+
+  """All values containing the given string."""
+  comment_contains: String
+
+  """All values not containing the given string."""
+  comment_not_contains: String
+
+  """All values starting with the given string."""
+  comment_starts_with: String
+
+  """All values not starting with the given string."""
+  comment_not_starts_with: String
+
+  """All values ending with the given string."""
+  comment_ends_with: String
+
+  """All values not ending with the given string."""
+  comment_not_ends_with: String
+  createdBy: UserWhereInput
+  account: AccountWhereInput
+  expense: ExpenseWhereInput
+  income: IncomeWhereInput
+  transfer: TransferWhereInput
+}
+
+input FinanceOperationWhereUniqueInput {
+  id: ID
+}
+
+type Income implements Node {
+  id: ID!
+  place: String!
+  financeOperation(where: FinanceOperationWhereInput): FinanceOperation!
+  category(where: IncomeCategoryWhereInput): IncomeCategory
+}
+
+type IncomeCategory implements Node {
+  id: ID!
+  name: String!
+  createdBy(where: UserWhereInput): User
+}
+
+"""A connection to a list of items."""
+type IncomeCategoryConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [IncomeCategoryEdge]!
+  aggregate: AggregateIncomeCategory!
+}
+
+input IncomeCategoryCreateInput {
+  name: String!
+  createdBy: UserCreateOneWithoutIncomeCategoriesInput
+}
+
+input IncomeCategoryCreateManyWithoutCreatedByInput {
+  create: [IncomeCategoryCreateWithoutCreatedByInput!]
+  connect: [IncomeCategoryWhereUniqueInput!]
+}
+
+input IncomeCategoryCreateOneInput {
+  create: IncomeCategoryCreateInput
+  connect: IncomeCategoryWhereUniqueInput
+}
+
+input IncomeCategoryCreateWithoutCreatedByInput {
+  name: String!
+}
+
+"""An edge in a connection."""
+type IncomeCategoryEdge {
+  """The item at the end of the edge."""
+  node: IncomeCategory!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum IncomeCategoryOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type IncomeCategoryPreviousValues {
+  id: ID!
+  name: String!
+}
+
+type IncomeCategorySubscriptionPayload {
+  mutation: MutationType!
+  node: IncomeCategory
+  updatedFields: [String!]
+  previousValues: IncomeCategoryPreviousValues
+}
+
+input IncomeCategorySubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [IncomeCategorySubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [IncomeCategorySubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [IncomeCategorySubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: IncomeCategoryWhereInput
+}
+
+input IncomeCategoryUpdateDataInput {
+  name: String
+  createdBy: UserUpdateOneWithoutIncomeCategoriesInput
+}
+
+input IncomeCategoryUpdateInput {
+  name: String
+  createdBy: UserUpdateOneWithoutIncomeCategoriesInput
+}
+
+input IncomeCategoryUpdateManyWithoutCreatedByInput {
+  create: [IncomeCategoryCreateWithoutCreatedByInput!]
+  connect: [IncomeCategoryWhereUniqueInput!]
+  disconnect: [IncomeCategoryWhereUniqueInput!]
+  delete: [IncomeCategoryWhereUniqueInput!]
+  update: [IncomeCategoryUpdateWithWhereUniqueWithoutCreatedByInput!]
+  upsert: [IncomeCategoryUpsertWithWhereUniqueWithoutCreatedByInput!]
+}
+
+input IncomeCategoryUpdateOneInput {
+  create: IncomeCategoryCreateInput
+  connect: IncomeCategoryWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: IncomeCategoryUpdateDataInput
+  upsert: IncomeCategoryUpsertNestedInput
+}
+
+input IncomeCategoryUpdateWithoutCreatedByDataInput {
+  name: String
+}
+
+input IncomeCategoryUpdateWithWhereUniqueWithoutCreatedByInput {
+  where: IncomeCategoryWhereUniqueInput!
+  data: IncomeCategoryUpdateWithoutCreatedByDataInput!
+}
+
+input IncomeCategoryUpsertNestedInput {
+  update: IncomeCategoryUpdateDataInput!
+  create: IncomeCategoryCreateInput!
+}
+
+input IncomeCategoryUpsertWithWhereUniqueWithoutCreatedByInput {
+  where: IncomeCategoryWhereUniqueInput!
+  update: IncomeCategoryUpdateWithoutCreatedByDataInput!
+  create: IncomeCategoryCreateWithoutCreatedByInput!
+}
+
+input IncomeCategoryWhereInput {
+  """Logical AND on all given filters."""
+  AND: [IncomeCategoryWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [IncomeCategoryWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [IncomeCategoryWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+  createdBy: UserWhereInput
+  _MagicalBackRelation_IncomeToIncomeCategory_every: IncomeWhereInput
+  _MagicalBackRelation_IncomeToIncomeCategory_some: IncomeWhereInput
+  _MagicalBackRelation_IncomeToIncomeCategory_none: IncomeWhereInput
+}
+
+input IncomeCategoryWhereUniqueInput {
+  id: ID
+}
+
+"""A connection to a list of items."""
+type IncomeConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [IncomeEdge]!
+  aggregate: AggregateIncome!
+}
+
+input IncomeCreateInput {
+  place: String!
+  financeOperation: FinanceOperationCreateOneWithoutIncomeInput!
+  category: IncomeCategoryCreateOneInput
+}
+
+input IncomeCreateOneWithoutFinanceOperationInput {
+  create: IncomeCreateWithoutFinanceOperationInput
+  connect: IncomeWhereUniqueInput
+}
+
+input IncomeCreateWithoutFinanceOperationInput {
+  place: String!
+  category: IncomeCategoryCreateOneInput
+}
+
+"""An edge in a connection."""
+type IncomeEdge {
+  """The item at the end of the edge."""
+  node: Income!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum IncomeOrderByInput {
+  id_ASC
+  id_DESC
+  place_ASC
+  place_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type IncomePreviousValues {
+  id: ID!
+  place: String!
+}
+
+type IncomeSubscriptionPayload {
+  mutation: MutationType!
+  node: Income
+  updatedFields: [String!]
+  previousValues: IncomePreviousValues
+}
+
+input IncomeSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [IncomeSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [IncomeSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [IncomeSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: IncomeWhereInput
+}
+
+input IncomeUpdateInput {
+  place: String
+  financeOperation: FinanceOperationUpdateOneWithoutIncomeInput
+  category: IncomeCategoryUpdateOneInput
+}
+
+input IncomeUpdateOneWithoutFinanceOperationInput {
+  create: IncomeCreateWithoutFinanceOperationInput
+  connect: IncomeWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: IncomeUpdateWithoutFinanceOperationDataInput
+  upsert: IncomeUpsertWithoutFinanceOperationInput
+}
+
+input IncomeUpdateWithoutFinanceOperationDataInput {
+  place: String
+  category: IncomeCategoryUpdateOneInput
+}
+
+input IncomeUpsertWithoutFinanceOperationInput {
+  update: IncomeUpdateWithoutFinanceOperationDataInput!
+  create: IncomeCreateWithoutFinanceOperationInput!
+}
+
+input IncomeWhereInput {
+  """Logical AND on all given filters."""
+  AND: [IncomeWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [IncomeWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [IncomeWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  place: String
+
+  """All values that are not equal to given value."""
+  place_not: String
+
+  """All values that are contained in given list."""
+  place_in: [String!]
+
+  """All values that are not contained in given list."""
+  place_not_in: [String!]
+
+  """All values less than the given value."""
+  place_lt: String
+
+  """All values less than or equal the given value."""
+  place_lte: String
+
+  """All values greater than the given value."""
+  place_gt: String
+
+  """All values greater than or equal the given value."""
+  place_gte: String
+
+  """All values containing the given string."""
+  place_contains: String
+
+  """All values not containing the given string."""
+  place_not_contains: String
+
+  """All values starting with the given string."""
+  place_starts_with: String
+
+  """All values not starting with the given string."""
+  place_not_starts_with: String
+
+  """All values ending with the given string."""
+  place_ends_with: String
+
+  """All values not ending with the given string."""
+  place_not_ends_with: String
+  financeOperation: FinanceOperationWhereInput
+  category: IncomeCategoryWhereInput
+}
+
+input IncomeWhereUniqueInput {
+  id: ID
+}
+
 """
 The `Long` scalar type represents non-fractional signed whole numeric values.
 Long can represent values between -(2^63) and 2^63 - 1.
@@ -18,11 +1755,53 @@ scalar Long
 
 type Mutation {
   createUser(data: UserCreateInput!): User!
+  createFinanceOperation(data: FinanceOperationCreateInput!): FinanceOperation!
+  createExpense(data: ExpenseCreateInput!): Expense!
+  createIncome(data: IncomeCreateInput!): Income!
+  createTransfer(data: TransferCreateInput!): Transfer!
+  createAccount(data: AccountCreateInput!): Account!
+  createIncomeCategory(data: IncomeCategoryCreateInput!): IncomeCategory!
+  createExpenseCategory(data: ExpenseCategoryCreateInput!): ExpenseCategory!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  updateFinanceOperation(data: FinanceOperationUpdateInput!, where: FinanceOperationWhereUniqueInput!): FinanceOperation
+  updateExpense(data: ExpenseUpdateInput!, where: ExpenseWhereUniqueInput!): Expense
+  updateIncome(data: IncomeUpdateInput!, where: IncomeWhereUniqueInput!): Income
+  updateTransfer(data: TransferUpdateInput!, where: TransferWhereUniqueInput!): Transfer
+  updateAccount(data: AccountUpdateInput!, where: AccountWhereUniqueInput!): Account
+  updateIncomeCategory(data: IncomeCategoryUpdateInput!, where: IncomeCategoryWhereUniqueInput!): IncomeCategory
+  updateExpenseCategory(data: ExpenseCategoryUpdateInput!, where: ExpenseCategoryWhereUniqueInput!): ExpenseCategory
   deleteUser(where: UserWhereUniqueInput!): User
+  deleteFinanceOperation(where: FinanceOperationWhereUniqueInput!): FinanceOperation
+  deleteExpense(where: ExpenseWhereUniqueInput!): Expense
+  deleteIncome(where: IncomeWhereUniqueInput!): Income
+  deleteTransfer(where: TransferWhereUniqueInput!): Transfer
+  deleteAccount(where: AccountWhereUniqueInput!): Account
+  deleteIncomeCategory(where: IncomeCategoryWhereUniqueInput!): IncomeCategory
+  deleteExpenseCategory(where: ExpenseCategoryWhereUniqueInput!): ExpenseCategory
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+  upsertFinanceOperation(where: FinanceOperationWhereUniqueInput!, create: FinanceOperationCreateInput!, update: FinanceOperationUpdateInput!): FinanceOperation!
+  upsertExpense(where: ExpenseWhereUniqueInput!, create: ExpenseCreateInput!, update: ExpenseUpdateInput!): Expense!
+  upsertIncome(where: IncomeWhereUniqueInput!, create: IncomeCreateInput!, update: IncomeUpdateInput!): Income!
+  upsertTransfer(where: TransferWhereUniqueInput!, create: TransferCreateInput!, update: TransferUpdateInput!): Transfer!
+  upsertAccount(where: AccountWhereUniqueInput!, create: AccountCreateInput!, update: AccountUpdateInput!): Account!
+  upsertIncomeCategory(where: IncomeCategoryWhereUniqueInput!, create: IncomeCategoryCreateInput!, update: IncomeCategoryUpdateInput!): IncomeCategory!
+  upsertExpenseCategory(where: ExpenseCategoryWhereUniqueInput!, create: ExpenseCategoryCreateInput!, update: ExpenseCategoryUpdateInput!): ExpenseCategory!
   updateManyUsers(data: UserUpdateInput!, where: UserWhereInput): BatchPayload!
+  updateManyFinanceOperations(data: FinanceOperationUpdateInput!, where: FinanceOperationWhereInput): BatchPayload!
+  updateManyExpenses(data: ExpenseUpdateInput!, where: ExpenseWhereInput): BatchPayload!
+  updateManyIncomes(data: IncomeUpdateInput!, where: IncomeWhereInput): BatchPayload!
+  updateManyTransfers(data: TransferUpdateInput!, where: TransferWhereInput): BatchPayload!
+  updateManyAccounts(data: AccountUpdateInput!, where: AccountWhereInput): BatchPayload!
+  updateManyIncomeCategories(data: IncomeCategoryUpdateInput!, where: IncomeCategoryWhereInput): BatchPayload!
+  updateManyExpenseCategories(data: ExpenseCategoryUpdateInput!, where: ExpenseCategoryWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
+  deleteManyFinanceOperations(where: FinanceOperationWhereInput): BatchPayload!
+  deleteManyExpenses(where: ExpenseWhereInput): BatchPayload!
+  deleteManyIncomes(where: IncomeWhereInput): BatchPayload!
+  deleteManyTransfers(where: TransferWhereInput): BatchPayload!
+  deleteManyAccounts(where: AccountWhereInput): BatchPayload!
+  deleteManyIncomeCategories(where: IncomeCategoryWhereInput): BatchPayload!
+  deleteManyExpenseCategories(where: ExpenseCategoryWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -54,8 +1833,29 @@ type PageInfo {
 
 type Query {
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
+  financeOperations(where: FinanceOperationWhereInput, orderBy: FinanceOperationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [FinanceOperation]!
+  expenses(where: ExpenseWhereInput, orderBy: ExpenseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Expense]!
+  incomes(where: IncomeWhereInput, orderBy: IncomeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Income]!
+  transfers(where: TransferWhereInput, orderBy: TransferOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Transfer]!
+  accounts(where: AccountWhereInput, orderBy: AccountOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Account]!
+  incomeCategories(where: IncomeCategoryWhereInput, orderBy: IncomeCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [IncomeCategory]!
+  expenseCategories(where: ExpenseCategoryWhereInput, orderBy: ExpenseCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ExpenseCategory]!
   user(where: UserWhereUniqueInput!): User
+  financeOperation(where: FinanceOperationWhereUniqueInput!): FinanceOperation
+  expense(where: ExpenseWhereUniqueInput!): Expense
+  income(where: IncomeWhereUniqueInput!): Income
+  transfer(where: TransferWhereUniqueInput!): Transfer
+  account(where: AccountWhereUniqueInput!): Account
+  incomeCategory(where: IncomeCategoryWhereUniqueInput!): IncomeCategory
+  expenseCategory(where: ExpenseCategoryWhereUniqueInput!): ExpenseCategory
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  financeOperationsConnection(where: FinanceOperationWhereInput, orderBy: FinanceOperationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FinanceOperationConnection!
+  expensesConnection(where: ExpenseWhereInput, orderBy: ExpenseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ExpenseConnection!
+  incomesConnection(where: IncomeWhereInput, orderBy: IncomeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): IncomeConnection!
+  transfersConnection(where: TransferWhereInput, orderBy: TransferOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TransferConnection!
+  accountsConnection(where: AccountWhereInput, orderBy: AccountOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AccountConnection!
+  incomeCategoriesConnection(where: IncomeCategoryWhereInput, orderBy: IncomeCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): IncomeCategoryConnection!
+  expenseCategoriesConnection(where: ExpenseCategoryWhereInput, orderBy: ExpenseCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ExpenseCategoryConnection!
 
   """Fetches an object given its ID"""
   node(
@@ -66,12 +1866,194 @@ type Query {
 
 type Subscription {
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+  financeOperation(where: FinanceOperationSubscriptionWhereInput): FinanceOperationSubscriptionPayload
+  expense(where: ExpenseSubscriptionWhereInput): ExpenseSubscriptionPayload
+  income(where: IncomeSubscriptionWhereInput): IncomeSubscriptionPayload
+  transfer(where: TransferSubscriptionWhereInput): TransferSubscriptionPayload
+  account(where: AccountSubscriptionWhereInput): AccountSubscriptionPayload
+  incomeCategory(where: IncomeCategorySubscriptionWhereInput): IncomeCategorySubscriptionPayload
+  expenseCategory(where: ExpenseCategorySubscriptionWhereInput): ExpenseCategorySubscriptionPayload
+}
+
+type Transfer implements Node {
+  id: ID!
+  financeOperation(where: FinanceOperationWhereInput): FinanceOperation!
+  toAccount(where: AccountWhereInput): Account!
+}
+
+"""A connection to a list of items."""
+type TransferConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [TransferEdge]!
+  aggregate: AggregateTransfer!
+}
+
+input TransferCreateInput {
+  financeOperation: FinanceOperationCreateOneWithoutTransferInput!
+  toAccount: AccountCreateOneInput!
+}
+
+input TransferCreateOneWithoutFinanceOperationInput {
+  create: TransferCreateWithoutFinanceOperationInput
+  connect: TransferWhereUniqueInput
+}
+
+input TransferCreateWithoutFinanceOperationInput {
+  toAccount: AccountCreateOneInput!
+}
+
+"""An edge in a connection."""
+type TransferEdge {
+  """The item at the end of the edge."""
+  node: Transfer!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum TransferOrderByInput {
+  id_ASC
+  id_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type TransferPreviousValues {
+  id: ID!
+}
+
+type TransferSubscriptionPayload {
+  mutation: MutationType!
+  node: Transfer
+  updatedFields: [String!]
+  previousValues: TransferPreviousValues
+}
+
+input TransferSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [TransferSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [TransferSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [TransferSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: TransferWhereInput
+}
+
+input TransferUpdateInput {
+  financeOperation: FinanceOperationUpdateOneWithoutTransferInput
+  toAccount: AccountUpdateOneInput
+}
+
+input TransferUpdateOneWithoutFinanceOperationInput {
+  create: TransferCreateWithoutFinanceOperationInput
+  connect: TransferWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: TransferUpdateWithoutFinanceOperationDataInput
+  upsert: TransferUpsertWithoutFinanceOperationInput
+}
+
+input TransferUpdateWithoutFinanceOperationDataInput {
+  toAccount: AccountUpdateOneInput
+}
+
+input TransferUpsertWithoutFinanceOperationInput {
+  update: TransferUpdateWithoutFinanceOperationDataInput!
+  create: TransferCreateWithoutFinanceOperationInput!
+}
+
+input TransferWhereInput {
+  """Logical AND on all given filters."""
+  AND: [TransferWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [TransferWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [TransferWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  financeOperation: FinanceOperationWhereInput
+  toAccount: AccountWhereInput
+}
+
+input TransferWhereUniqueInput {
+  id: ID
 }
 
 type User implements Node {
   id: ID!
   phone: String!
   name: String
+  accounts(where: AccountWhereInput, orderBy: AccountOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Account!]
+  financeOperations(where: FinanceOperationWhereInput, orderBy: FinanceOperationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [FinanceOperation!]
+  incomeCategories(where: IncomeCategoryWhereInput, orderBy: IncomeCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [IncomeCategory!]
+  expenseCategories(where: ExpenseCategoryWhereInput, orderBy: ExpenseCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ExpenseCategory!]
 }
 
 """A connection to a list of items."""
@@ -87,6 +2069,62 @@ type UserConnection {
 input UserCreateInput {
   phone: String!
   name: String
+  accounts: AccountCreateManyWithoutOwnerInput
+  financeOperations: FinanceOperationCreateManyWithoutCreatedByInput
+  incomeCategories: IncomeCategoryCreateManyWithoutCreatedByInput
+  expenseCategories: ExpenseCategoryCreateManyWithoutCreatedByInput
+}
+
+input UserCreateOneWithoutAccountsInput {
+  create: UserCreateWithoutAccountsInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateOneWithoutExpenseCategoriesInput {
+  create: UserCreateWithoutExpenseCategoriesInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateOneWithoutFinanceOperationsInput {
+  create: UserCreateWithoutFinanceOperationsInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateOneWithoutIncomeCategoriesInput {
+  create: UserCreateWithoutIncomeCategoriesInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateWithoutAccountsInput {
+  phone: String!
+  name: String
+  financeOperations: FinanceOperationCreateManyWithoutCreatedByInput
+  incomeCategories: IncomeCategoryCreateManyWithoutCreatedByInput
+  expenseCategories: ExpenseCategoryCreateManyWithoutCreatedByInput
+}
+
+input UserCreateWithoutExpenseCategoriesInput {
+  phone: String!
+  name: String
+  accounts: AccountCreateManyWithoutOwnerInput
+  financeOperations: FinanceOperationCreateManyWithoutCreatedByInput
+  incomeCategories: IncomeCategoryCreateManyWithoutCreatedByInput
+}
+
+input UserCreateWithoutFinanceOperationsInput {
+  phone: String!
+  name: String
+  accounts: AccountCreateManyWithoutOwnerInput
+  incomeCategories: IncomeCategoryCreateManyWithoutCreatedByInput
+  expenseCategories: ExpenseCategoryCreateManyWithoutCreatedByInput
+}
+
+input UserCreateWithoutIncomeCategoriesInput {
+  phone: String!
+  name: String
+  accounts: AccountCreateManyWithoutOwnerInput
+  financeOperations: FinanceOperationCreateManyWithoutCreatedByInput
+  expenseCategories: ExpenseCategoryCreateManyWithoutCreatedByInput
 }
 
 """An edge in a connection."""
@@ -159,6 +2197,96 @@ input UserSubscriptionWhereInput {
 input UserUpdateInput {
   phone: String
   name: String
+  accounts: AccountUpdateManyWithoutOwnerInput
+  financeOperations: FinanceOperationUpdateManyWithoutCreatedByInput
+  incomeCategories: IncomeCategoryUpdateManyWithoutCreatedByInput
+  expenseCategories: ExpenseCategoryUpdateManyWithoutCreatedByInput
+}
+
+input UserUpdateOneWithoutAccountsInput {
+  create: UserCreateWithoutAccountsInput
+  connect: UserWhereUniqueInput
+  delete: Boolean
+  update: UserUpdateWithoutAccountsDataInput
+  upsert: UserUpsertWithoutAccountsInput
+}
+
+input UserUpdateOneWithoutExpenseCategoriesInput {
+  create: UserCreateWithoutExpenseCategoriesInput
+  connect: UserWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: UserUpdateWithoutExpenseCategoriesDataInput
+  upsert: UserUpsertWithoutExpenseCategoriesInput
+}
+
+input UserUpdateOneWithoutFinanceOperationsInput {
+  create: UserCreateWithoutFinanceOperationsInput
+  connect: UserWhereUniqueInput
+  delete: Boolean
+  update: UserUpdateWithoutFinanceOperationsDataInput
+  upsert: UserUpsertWithoutFinanceOperationsInput
+}
+
+input UserUpdateOneWithoutIncomeCategoriesInput {
+  create: UserCreateWithoutIncomeCategoriesInput
+  connect: UserWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: UserUpdateWithoutIncomeCategoriesDataInput
+  upsert: UserUpsertWithoutIncomeCategoriesInput
+}
+
+input UserUpdateWithoutAccountsDataInput {
+  phone: String
+  name: String
+  financeOperations: FinanceOperationUpdateManyWithoutCreatedByInput
+  incomeCategories: IncomeCategoryUpdateManyWithoutCreatedByInput
+  expenseCategories: ExpenseCategoryUpdateManyWithoutCreatedByInput
+}
+
+input UserUpdateWithoutExpenseCategoriesDataInput {
+  phone: String
+  name: String
+  accounts: AccountUpdateManyWithoutOwnerInput
+  financeOperations: FinanceOperationUpdateManyWithoutCreatedByInput
+  incomeCategories: IncomeCategoryUpdateManyWithoutCreatedByInput
+}
+
+input UserUpdateWithoutFinanceOperationsDataInput {
+  phone: String
+  name: String
+  accounts: AccountUpdateManyWithoutOwnerInput
+  incomeCategories: IncomeCategoryUpdateManyWithoutCreatedByInput
+  expenseCategories: ExpenseCategoryUpdateManyWithoutCreatedByInput
+}
+
+input UserUpdateWithoutIncomeCategoriesDataInput {
+  phone: String
+  name: String
+  accounts: AccountUpdateManyWithoutOwnerInput
+  financeOperations: FinanceOperationUpdateManyWithoutCreatedByInput
+  expenseCategories: ExpenseCategoryUpdateManyWithoutCreatedByInput
+}
+
+input UserUpsertWithoutAccountsInput {
+  update: UserUpdateWithoutAccountsDataInput!
+  create: UserCreateWithoutAccountsInput!
+}
+
+input UserUpsertWithoutExpenseCategoriesInput {
+  update: UserUpdateWithoutExpenseCategoriesDataInput!
+  create: UserCreateWithoutExpenseCategoriesInput!
+}
+
+input UserUpsertWithoutFinanceOperationsInput {
+  update: UserUpdateWithoutFinanceOperationsDataInput!
+  create: UserCreateWithoutFinanceOperationsInput!
+}
+
+input UserUpsertWithoutIncomeCategoriesInput {
+  update: UserUpdateWithoutIncomeCategoriesDataInput!
+  create: UserCreateWithoutIncomeCategoriesInput!
 }
 
 input UserWhereInput {
@@ -290,6 +2418,18 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   name_not_ends_with: String
+  accounts_every: AccountWhereInput
+  accounts_some: AccountWhereInput
+  accounts_none: AccountWhereInput
+  financeOperations_every: FinanceOperationWhereInput
+  financeOperations_some: FinanceOperationWhereInput
+  financeOperations_none: FinanceOperationWhereInput
+  incomeCategories_every: IncomeCategoryWhereInput
+  incomeCategories_some: IncomeCategoryWhereInput
+  incomeCategories_none: IncomeCategoryWhereInput
+  expenseCategories_every: ExpenseCategoryWhereInput
+  expenseCategories_some: ExpenseCategoryWhereInput
+  expenseCategories_none: ExpenseCategoryWhereInput
 }
 
 input UserWhereUniqueInput {
