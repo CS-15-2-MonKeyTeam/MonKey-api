@@ -1,5 +1,5 @@
 # source: https://monkey-prisma.herokuapp.com/monkey/dev
-# timestamp: Sun Oct 28 2018 19:20:40 GMT+0200 (Eastern European Standard Time)
+# timestamp: Mon Oct 29 2018 00:10:37 GMT+0200 (Eastern European Standard Time)
 
 type Account implements Node {
   id: ID!
@@ -357,7 +357,7 @@ scalar DateTime
 
 type Expense implements Node {
   id: ID!
-  payee: String!
+  payee: String
   financeOperation(where: FinanceOperationWhereInput): FinanceOperation!
   category(where: ExpenseCategoryWhereInput): ExpenseCategory
 }
@@ -365,6 +365,7 @@ type Expense implements Node {
 type ExpenseCategory implements Node {
   id: ID!
   name: String!
+  public: Boolean!
   createdBy(where: UserWhereInput): User
 }
 
@@ -380,6 +381,7 @@ type ExpenseCategoryConnection {
 
 input ExpenseCategoryCreateInput {
   name: String!
+  public: Boolean
   createdBy: UserCreateOneWithoutExpenseCategoriesInput
 }
 
@@ -395,6 +397,7 @@ input ExpenseCategoryCreateOneInput {
 
 input ExpenseCategoryCreateWithoutCreatedByInput {
   name: String!
+  public: Boolean
 }
 
 """An edge in a connection."""
@@ -411,6 +414,8 @@ enum ExpenseCategoryOrderByInput {
   id_DESC
   name_ASC
   name_DESC
+  public_ASC
+  public_DESC
   updatedAt_ASC
   updatedAt_DESC
   createdAt_ASC
@@ -420,6 +425,7 @@ enum ExpenseCategoryOrderByInput {
 type ExpenseCategoryPreviousValues {
   id: ID!
   name: String!
+  public: Boolean!
 }
 
 type ExpenseCategorySubscriptionPayload {
@@ -463,11 +469,13 @@ input ExpenseCategorySubscriptionWhereInput {
 
 input ExpenseCategoryUpdateDataInput {
   name: String
+  public: Boolean
   createdBy: UserUpdateOneWithoutExpenseCategoriesInput
 }
 
 input ExpenseCategoryUpdateInput {
   name: String
+  public: Boolean
   createdBy: UserUpdateOneWithoutExpenseCategoriesInput
 }
 
@@ -491,6 +499,7 @@ input ExpenseCategoryUpdateOneInput {
 
 input ExpenseCategoryUpdateWithoutCreatedByDataInput {
   name: String
+  public: Boolean
 }
 
 input ExpenseCategoryUpdateWithWhereUniqueWithoutCreatedByInput {
@@ -598,6 +607,10 @@ input ExpenseCategoryWhereInput {
 
   """All values not ending with the given string."""
   name_not_ends_with: String
+  public: Boolean
+
+  """All values that are not equal to given value."""
+  public_not: Boolean
   createdBy: UserWhereInput
   _MagicalBackRelation_ExpenseToExpenseCategory_every: ExpenseWhereInput
   _MagicalBackRelation_ExpenseToExpenseCategory_some: ExpenseWhereInput
@@ -619,7 +632,7 @@ type ExpenseConnection {
 }
 
 input ExpenseCreateInput {
-  payee: String!
+  payee: String
   financeOperation: FinanceOperationCreateOneWithoutExpenseInput!
   category: ExpenseCategoryCreateOneInput
 }
@@ -630,7 +643,7 @@ input ExpenseCreateOneWithoutFinanceOperationInput {
 }
 
 input ExpenseCreateWithoutFinanceOperationInput {
-  payee: String!
+  payee: String
   category: ExpenseCategoryCreateOneInput
 }
 
@@ -656,7 +669,7 @@ enum ExpenseOrderByInput {
 
 type ExpensePreviousValues {
   id: ID!
-  payee: String!
+  payee: String
 }
 
 type ExpenseSubscriptionPayload {
@@ -1284,7 +1297,7 @@ input FinanceOperationWhereUniqueInput {
 
 type Income implements Node {
   id: ID!
-  place: String!
+  place: String
   financeOperation(where: FinanceOperationWhereInput): FinanceOperation!
   category(where: IncomeCategoryWhereInput): IncomeCategory
 }
@@ -1292,6 +1305,7 @@ type Income implements Node {
 type IncomeCategory implements Node {
   id: ID!
   name: String!
+  public: Boolean!
   createdBy(where: UserWhereInput): User
 }
 
@@ -1307,6 +1321,7 @@ type IncomeCategoryConnection {
 
 input IncomeCategoryCreateInput {
   name: String!
+  public: Boolean
   createdBy: UserCreateOneWithoutIncomeCategoriesInput
 }
 
@@ -1322,6 +1337,7 @@ input IncomeCategoryCreateOneInput {
 
 input IncomeCategoryCreateWithoutCreatedByInput {
   name: String!
+  public: Boolean
 }
 
 """An edge in a connection."""
@@ -1338,6 +1354,8 @@ enum IncomeCategoryOrderByInput {
   id_DESC
   name_ASC
   name_DESC
+  public_ASC
+  public_DESC
   updatedAt_ASC
   updatedAt_DESC
   createdAt_ASC
@@ -1347,6 +1365,7 @@ enum IncomeCategoryOrderByInput {
 type IncomeCategoryPreviousValues {
   id: ID!
   name: String!
+  public: Boolean!
 }
 
 type IncomeCategorySubscriptionPayload {
@@ -1390,11 +1409,13 @@ input IncomeCategorySubscriptionWhereInput {
 
 input IncomeCategoryUpdateDataInput {
   name: String
+  public: Boolean
   createdBy: UserUpdateOneWithoutIncomeCategoriesInput
 }
 
 input IncomeCategoryUpdateInput {
   name: String
+  public: Boolean
   createdBy: UserUpdateOneWithoutIncomeCategoriesInput
 }
 
@@ -1418,6 +1439,7 @@ input IncomeCategoryUpdateOneInput {
 
 input IncomeCategoryUpdateWithoutCreatedByDataInput {
   name: String
+  public: Boolean
 }
 
 input IncomeCategoryUpdateWithWhereUniqueWithoutCreatedByInput {
@@ -1525,6 +1547,10 @@ input IncomeCategoryWhereInput {
 
   """All values not ending with the given string."""
   name_not_ends_with: String
+  public: Boolean
+
+  """All values that are not equal to given value."""
+  public_not: Boolean
   createdBy: UserWhereInput
   _MagicalBackRelation_IncomeToIncomeCategory_every: IncomeWhereInput
   _MagicalBackRelation_IncomeToIncomeCategory_some: IncomeWhereInput
@@ -1546,7 +1572,7 @@ type IncomeConnection {
 }
 
 input IncomeCreateInput {
-  place: String!
+  place: String
   financeOperation: FinanceOperationCreateOneWithoutIncomeInput!
   category: IncomeCategoryCreateOneInput
 }
@@ -1557,7 +1583,7 @@ input IncomeCreateOneWithoutFinanceOperationInput {
 }
 
 input IncomeCreateWithoutFinanceOperationInput {
-  place: String!
+  place: String
   category: IncomeCategoryCreateOneInput
 }
 
@@ -1583,7 +1609,7 @@ enum IncomeOrderByInput {
 
 type IncomePreviousValues {
   id: ID!
-  place: String!
+  place: String
 }
 
 type IncomeSubscriptionPayload {

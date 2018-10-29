@@ -1,9 +1,20 @@
 # import User from "./generated/prisma.graphql"
 # import Account from "./generated/prisma.graphql"
+# import ExpenseCategory from "./generated/prisma.graphql"
+# import IncomeCategory from "./generated/prisma.graphql"
 
 type Query {
   me: User
   accounts: [Account!]!
+  financeOperations(
+    type: FinanceOperationType
+    categoryId: ID
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [FinanceOperation!]!
 }
 
 type Mutation {
@@ -14,9 +25,74 @@ type Mutation {
   createAccount(name: String!, balance: Float): Account!
   deleteAccount(id: ID!): Account!
   updateAccount(id: ID!, name: String!): Account!
+
+  createExpense(amount: Float!, accountId: ID!, date: DateTime, comment: String, payee: String, categoryId: ID): Expense!
+  # updateExpense(amount: Float, accountId: ID, date: DateTime, comment: String, payee: String, categoryId: ID): Expense!
+
+  # createIncome(amount: Float!, accountId: ID!, date: DateTime, comment: String, place: String, categoryId: ID): Income!
+  # updateIncome(amount: Float, accountId: ID, date: DateTime, comment: String, place: String, categoryId: ID): Income!
+
+  # createTransfer(amount: Float!, accountId: ID!, date: DateTime, comment: String, toAccountId: ID!): Transfer!
+  # updateTransfer(amount: Float, accountId: ID, date: DateTime, comment: String, toAccountId: ID!): Transfer!
+
+  deleteFinanceOperation(id: ID!): FinanceOperation!
 }
 
 type AuthPayload {
   token: String!
   user: User!
+}
+
+interface FinanceOperation {
+  id: ID!
+  amount: Float!
+  date: DateTime!
+  comment: String
+
+  createdBy: User!
+  account: Account!
+}
+
+type Expense implements FinanceOperation {
+  id: ID!
+  amount: Float!
+  date: DateTime!
+  comment: String
+
+  createdBy: User!
+  account: Account!
+
+  payee: String
+  category: ExpenseCategory
+}
+
+type Income implements FinanceOperation {
+  id: ID!
+  amount: Float!
+  date: DateTime!
+  comment: String
+
+  createdBy: User!
+  account: Account!
+
+  place: String
+  category: IncomeCategory
+}
+
+type Transfer implements FinanceOperation {
+  id: ID!
+  amount: Float!
+  date: DateTime!
+  comment: String
+
+  createdBy: User!
+  account: Account!
+
+  toAccount: Account!
+}
+
+enum FinanceOperationType {
+  EXPENSE
+  INCOME
+  TRANSFER
 }

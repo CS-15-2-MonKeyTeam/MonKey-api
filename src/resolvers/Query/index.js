@@ -1,9 +1,11 @@
 const profile = require('./profile');
 const account = require('./account');
+const financeOperation = require('./financeOperation');
 
 const Query = {
   ...profile,
-  ...account
+  ...account,
+  ...financeOperation
 };
 
 module.exports = Query;
