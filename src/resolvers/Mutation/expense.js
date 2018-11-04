@@ -15,7 +15,12 @@ const makeSelection = info =>
   )(info);
 
 const expense = {
-  async createExpense(parent, { amount, accountId, date, comment, payee, categoryId }, ctx, info) {
+  async createExpense(
+    parent,
+    { amount, accountId, date, comment, payee = '', categoryId },
+    ctx,
+    info
+  ) {
     const userId = getUserId(ctx);
     const promiseList = [ctx.db.query.account({ where: { id: accountId } }, '{ id balance }')];
     if (categoryId) {
@@ -57,7 +62,15 @@ const expense = {
   }
 
   // async updateExpense(parent, { amount, accountId, date, comment, payee, categoryId }, ctx, info) {
-  // TODO:
+  //   const userId = getUserId(ctx);
+  //   const foExists = await ctx.db.exists.FinanceOperation({ id, createdBy: { id: userId } });
+  //   if (!foExists) {
+  //     throw new Error("Finance operation not found or you're not the owner.");
+  //   }
+
+  //   return ctx.db.mutation
+  //     .deleteFinanceOperation({ where: { id } }, makeSelection(info))
+  //     .then(formatPrimitiveFields);
   // }
 };
 

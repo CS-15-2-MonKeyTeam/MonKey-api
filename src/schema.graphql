@@ -6,15 +6,15 @@
 type Query {
   me: User
   accounts: [Account!]!
-  financeOperations(
-    type: FinanceOperationType
-    categoryId: ID
-    skip: Int
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): [FinanceOperation!]!
+  financeOperations: [FinanceOperation!]!
+  # TODO: financeOperations params
+  # type: FinanceOperationType
+  # categoryId: ID
+  # skip: Int
+  # after: String
+  # before: String
+  # first: Int
+  # last: Int
 }
 
 type Mutation {
