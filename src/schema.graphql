@@ -48,46 +48,45 @@ interface FinanceOperation {
   amount: Float!
   date: DateTime!
   comment: String
-
   createdBy: User!
   account: Account!
 }
 
 type Expense implements FinanceOperation {
+  # interface
   id: ID!
   amount: Float!
   date: DateTime!
   comment: String
-
   createdBy: User!
   account: Account!
-
+  # custom fields
   payee: String
   category: ExpenseCategory
 }
 
 type Income implements FinanceOperation {
+  # interface
   id: ID!
   amount: Float!
   date: DateTime!
   comment: String
-
   createdBy: User!
   account: Account!
-
+  # custom fields
   place: String
   category: IncomeCategory
 }
 
 type Transfer implements FinanceOperation {
+  # interface
   id: ID!
   amount: Float!
   date: DateTime!
   comment: String
-
   createdBy: User!
   account: Account!
-
+  # custom fields
   toAccount: Account!
 }
 

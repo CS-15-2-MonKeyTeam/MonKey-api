@@ -29,32 +29,15 @@ type FinanceOperation {
 
   createdBy: User! @relation(name: "FinanceOperationsByUser")
   account: Account! @relation(name: "FinanceOperationsByAccount")
-  expense: Expense @relation(name: "ExpenseFinanceOperation", onDelete: CASCADE)
-  income: Income @relation(name: "IncomeFinanceOperation", onDelete: CASCADE)
-  transfer: Transfer @relation(name: "TransferFinanceOperation", onDelete: CASCADE)
-}
 
-type Expense {
-  id: ID! @unique
-  payee: String
-
-  financeOperation: FinanceOperation! @relation(name: "ExpenseFinanceOperation")
-  category: ExpenseCategory
-}
-
-type Income {
-  id: ID! @unique
-  place: String
-
-  financeOperation: FinanceOperation! @relation(name: "IncomeFinanceOperation")
-  category: IncomeCategory
-}
-
-type Transfer {
-  id: ID! @unique
-
-  financeOperation: FinanceOperation! @relation(name: "TransferFinanceOperation")
-  toAccount: Account!
+  # custom fields: Expense
+  expense_payee: String
+  expense_category: ExpenseCategory
+  # custom fields: Income
+  income_place: String
+  income_category: IncomeCategory
+  #custom fields: Transfer
+  transfer_toAccount: Account @relation(name: "TransferToAccount")
 }
 
 type IncomeCategory {

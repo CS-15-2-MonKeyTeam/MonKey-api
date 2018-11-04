@@ -1,55 +1,25 @@
-const _ = require('lodash');
+const R = require('ramda');
+
 const { getUserId } = require('../../utils');
+const { makeSelectionList, formatPrimitiveFields } = require('../interfaces');
+
+const makeSelection = info =>
+  R.compose(
+    fields => `{ ${R.join(' ')(fields)} }`,
+    makeSelectionList
+  )(info);
 
 const financeOperation = {
-  async financeOperations(parent, args, ctx, info) {
+  financeOperations(parent, args, ctx, info) {
     const userId = getUserId(ctx);
-    const financeOperations = await ctx.db.query.financeOperations(
-      {
-        where: { createdBy: { id: userId } }
-      },
-      `{
-        id
-        amount
-        date
-        comment
-        account {
-          id
-          name
-          balance
-        }
-        expense {
-          payee
-          category {
-            id
-            name
-            public
-          }
-        }
-        income {
-          place
-          category {
-            id
-            name
-            public
-          }
-        }
-        transfer {
-          toAccount {
-            id
-            name
-            balance
-          }
-        }
-      }`
-    );
-
-    return financeOperations.map(fo => ({
-      ..._.omit(fo, ['expense', 'income', 'transfer']),
-      ...fo.expense,
-      ...fo.income,
-      ...fo.transfer
-    }));
+    return ctx.db.query
+      .financeOperations(
+        {
+          where: { createdBy: { id: userId } }
+        },
+        makeSelection(info)
+      )
+      .then(R.map(formatPrimitiveFields));
   }
 };
 

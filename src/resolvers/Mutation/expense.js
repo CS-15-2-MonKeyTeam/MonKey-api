@@ -1,43 +1,59 @@
-const _ = require('lodash');
+const R = require('ramda');
+const { makeSelectionList, formatPrimitiveFields } = require('../interfaces');
 const { getUserId } = require('../../utils');
+
+const makeSelection = info =>
+  R.compose(
+    fields => `{ ${R.join(' ')(fields)} }`,
+    fields =>
+      R.map(
+        field =>
+          field.startsWith('category') || field.startsWith('payee') ? `expense_${field}` : field,
+        fields
+      ),
+    makeSelectionList
+  )(info);
 
 const expense = {
   async createExpense(parent, { amount, accountId, date, comment, payee, categoryId }, ctx, info) {
     const userId = getUserId(ctx);
-    const [commonCategoryExists, categoryExists, accountExists] = await Promise.all([
-      ctx.db.exists.ExpenseCategory({ id: categoryId, public: true }),
-      ctx.db.exists.ExpenseCategory({ id: categoryId, createdBy: { id: userId } }),
-      ctx.db.exists.Account({ id: accountId })
-    ]);
-    if (!commonCategoryExists && !categoryExists) {
+    const promiseList = [ctx.db.query.account({ where: { id: accountId } }, '{ id balance }')];
+    if (categoryId) {
+      promiseList.push(
+        ctx.db.exists.ExpenseCategory({ id: categoryId, public: true }),
+        ctx.db.exists.ExpenseCategory({ id: categoryId, createdBy: { id: userId } })
+      );
+    }
+    const [account, commonCategoryExists, categoryExists] = await Promise.all(promiseList);
+
+    if (categoryId && !commonCategoryExists && !categoryExists) {
       throw new Error('Category not found.');
     }
-    if (!accountExists) {
+    if (!account) {
       throw new Error('Account not found.');
     }
 
-    const financeOperation = await ctx.db.mutation.createFinanceOperation(
-      {
-        data: {
-          amount,
-          date,
-          comment,
-          account: { connect: { id: accountId } },
-          createdBy: { connect: { id: userId } },
-          expense: { create: { payee, category: { connect: { id: categoryId } } } }
-        }
-      },
-      '{ id, amount, date, comment, account { id, name, balance }, expense { payee, category { id, name, public } } }'
-    );
-
-    const balance = financeOperation.account.balance - amount;
-
-    const account = await ctx.db.mutation.updateAccount({
+    await ctx.db.mutation.updateAccount({
       where: { id: accountId },
-      data: { balance }
+      data: { balance: account.balance - amount }
     });
 
-    return { ..._.omit(financeOperation, ['expense']), ...financeOperation.expense, account };
+    return ctx.db.mutation
+      .createFinanceOperation(
+        {
+          data: {
+            amount,
+            date,
+            comment,
+            account: { connect: { id: accountId } },
+            createdBy: { connect: { id: userId } },
+            expense_payee: payee,
+            expense_category: categoryId && { connect: { id: categoryId } }
+          }
+        },
+        makeSelection(info)
+      )
+      .then(formatPrimitiveFields);
   }
 
   // async updateExpense(parent, { amount, accountId, date, comment, payee, categoryId }, ctx, info) {
