@@ -4,9 +4,9 @@ const interfaces = {
   FinanceOperation: {
     __resolveType(obj) {
       // resolve the type of the incoming interface data
-      if (obj.payee !== null) {
+      if (typeof obj.payee === 'string') {
         return 'Expense';
-      } else if (obj.place !== null) {
+      } else if (typeof obj.place === 'string') {
         return 'Income';
       }
       return 'Transfer';

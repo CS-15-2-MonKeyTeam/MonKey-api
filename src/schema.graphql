@@ -27,13 +27,13 @@ type Mutation {
   updateAccount(id: ID!, name: String!): Account!
 
   createExpense(amount: Float!, accountId: ID!, date: DateTime, comment: String, payee: String, categoryId: ID): Expense!
-  # updateExpense(amount: Float, accountId: ID, date: DateTime, comment: String, payee: String, categoryId: ID): Expense!
+  updateExpense(id: ID!, amount: Float, accountId: ID, date: DateTime, comment: String, payee: String, categoryId: ID): Expense!
 
-  # createIncome(amount: Float!, accountId: ID!, date: DateTime, comment: String, place: String, categoryId: ID): Income!
-  # updateIncome(amount: Float, accountId: ID, date: DateTime, comment: String, place: String, categoryId: ID): Income!
+  createIncome(amount: Float!, accountId: ID!, date: DateTime, comment: String, place: String, categoryId: ID): Income!
+  updateIncome(id: ID!, amount: Float, accountId: ID, date: DateTime, comment: String, place: String, categoryId: ID): Income!
 
-  # createTransfer(amount: Float!, accountId: ID!, date: DateTime, comment: String, toAccountId: ID!): Transfer!
-  # updateTransfer(amount: Float, accountId: ID, date: DateTime, comment: String, toAccountId: ID!): Transfer!
+  createTransfer(amount: Float!, accountId: ID!, date: DateTime, comment: String, toAccountId: ID!): Transfer!
+  updateTransfer(id: ID!, amount: Float, accountId: ID, date: DateTime, comment: String, toAccountId: ID!): Transfer!
 
   deleteFinanceOperation(id: ID!): FinanceOperation!
 }

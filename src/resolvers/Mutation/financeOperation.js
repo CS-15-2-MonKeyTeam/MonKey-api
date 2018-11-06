@@ -10,9 +10,9 @@ const makeSelection = info =>
   )(info);
 
 function resolveType(fo) {
-  if (fo.expense_payee !== null) {
+  if (typeof fo.expense_payee === 'string') {
     return 'E';
-  } else if (fo.income_place !== null) {
+  } else if (typeof fo.income_place === 'string') {
     return 'I';
   }
   return 'T';
