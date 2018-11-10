@@ -22,16 +22,14 @@ const expense = {
     info
   ) {
     const userId = getUserId(ctx);
-    const promiseList = [
-      ctx.db.query.account({ where: { id: accountId } }, '{ id balance owner { id } }')
-    ];
-    if (categoryId) {
-      promiseList.push(
-        ctx.db.exists.ExpenseCategory({ id: categoryId, public: true }),
-        ctx.db.exists.ExpenseCategory({ id: categoryId, createdBy: { id: userId } })
-      );
-    }
-    const [account, commonCategoryExists, categoryExists] = await Promise.all(promiseList);
+
+    if (amount <= 0) throw new Error('Amount should be greater then 0.');
+
+    const [account, commonCategoryExists, categoryExists] = await Promise.all([
+      ctx.db.query.account({ where: { id: accountId } }, '{ id balance owner { id } }'),
+      categoryId && ctx.db.exists.ExpenseCategory({ id: categoryId, public: true }),
+      categoryId && ctx.db.exists.ExpenseCategory({ id: categoryId, createdBy: { id: userId } })
+    ]);
 
     if (categoryId && !commonCategoryExists && !categoryExists) {
       throw new Error('Category not found.');
@@ -71,6 +69,10 @@ const expense = {
   ) {
     const userId = getUserId(ctx);
 
+    if (typeof amount === 'number' && amount <= 0) {
+      throw new Error('Amount should be greater then 0.');
+    }
+
     const fo = await ctx.db.query.financeOperation(
       { where: { id } },
       '{ id amount expense_payee createdBy { id } account { id balance } }'
@@ -79,14 +81,38 @@ const expense = {
       throw new Error('Expense not found.');
     }
 
-    // TODO: if accountId
+    const newAccount =
+      accountId &&
+      accountId !== fo.account.id &&
+      (await ctx.db.query.account({ where: { id: accountId } }, '{ id balance owner { id } }'));
 
-    if (typeof amount === 'number') {
-      await ctx.db.mutation.updateAccount({
-        where: { id: fo.account.id },
-        data: { balance: fo.account.balance + (fo.amount - amount) }
-      });
+    let oldAccountBalance = fo.account.balance;
+    let newAccountBalance = newAccount && newAccount.balance;
+
+    if (newAccount) {
+      oldAccountBalance += fo.amount;
+      newAccountBalance -= amount || fo.amount;
+    } else {
+      oldAccountBalance += fo.amount - +amount;
     }
+
+    await Promise.all([
+      oldAccountBalance !== fo.account.balance &&
+        ctx.db.mutation.updateAccount({
+          where: { id: fo.account.id },
+          data: {
+            balance: oldAccountBalance
+          }
+        }),
+      newAccount &&
+        newAccount.balance !== newAccountBalance &&
+        ctx.db.mutation.updateAccount({
+          where: { id: newAccount.id },
+          data: {
+            balance: newAccountBalance
+          }
+        })
+    ]);
 
     return ctx.db.mutation
       .updateFinanceOperation(

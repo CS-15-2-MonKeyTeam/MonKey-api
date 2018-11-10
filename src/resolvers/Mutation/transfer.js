@@ -13,6 +13,8 @@ const transfer = {
   async createTransfer(parent, { amount, accountId, date, comment, toAccountId }, ctx, info) {
     const userId = getUserId(ctx);
 
+    if (amount <= 0) throw new Error('Amount should be greater then 0.');
+
     const [account, toAccount] = await Promise.all([
       ctx.db.query.account({ where: { id: accountId } }, '{ id balance owner { id } }'),
       ctx.db.query.account({ where: { id: toAccountId } }, '{ id balance owner { id } }')
@@ -53,29 +55,27 @@ const transfer = {
   async updateTransfer(parent, { id, amount, accountId, date, comment, toAccountId }, ctx, info) {
     const userId = getUserId(ctx);
 
-    const queryPromiseList = [
-      ctx.db.query.financeOperation(
-        { where: { id } },
-        '{ id amount createdBy { id } account { id balance } toAccount { id } }'
-      )
-    ];
-
-    queryPromiseList.push(
-      accountId
-        ? ctx.db.query.account({ where: { id: accountId } }, '{ id balance owner { id } }')
-        : new Promise(resolve => resolve(undefined))
-    );
-    if (toAccountId) {
-      queryPromiseList.push(
-        ctx.db.query.account({ where: { id: toAccountId } }, '{ id balance owner { id } }')
-      );
+    if (typeof amount === 'number' && amount <= 0) {
+      throw new Error('Amount should be greater then 0.');
     }
 
-    const [fo, newAccount, newToAccount] = await Promise.all(queryPromiseList);
+    const fo = await ctx.db.query.financeOperation(
+      { where: { id } },
+      '{ id amount createdBy { id } account { id balance } toAccount { id } }'
+    );
 
     if (!fo || fo.createdBy.id !== userId || !fo.toAccount) {
       throw new Error('Transfer not found.');
     }
+
+    const [newAccount, newToAccount] = await Promise.all(
+      accountId &&
+        fo.account.id !== accountId &&
+        ctx.db.query.account({ where: { id: accountId } }, '{ id balance owner { id } }'),
+      toAccountId &&
+        fo.toAccoun.id !== toAccountId &&
+        ctx.db.query.account({ where: { id: toAccountId } }, '{ id balance owner { id } }')
+    );
 
     if (
       (accountId && (!newAccount || newAccount.owner.id !== userId)) ||
@@ -89,63 +89,51 @@ const transfer = {
     let oldToAccountBalance = fo.toAccount.balance;
     let newToAccountBalance = newToAccount && newToAccount.balance;
 
-    if (accountId) {
+    if (newAccount) {
       oldAccountBalance += fo.amount;
       newAccountBalance -= fo.amount;
     } else {
       oldAccountBalance += fo.amount - +amount;
     }
-    if (toAccountId) {
+    if (newToAccount) {
       oldToAccountBalance -= fo.amount;
       newToAccountBalance += fo.amount;
     } else {
       oldToAccountBalance -= fo.amount - +amount;
     }
 
-    const promiseList = [];
-
-    if (oldAccountBalance !== fo.account.balance) {
-      promiseList.push(
+    await Promise.all([
+      oldAccountBalance !== fo.account.balance &&
         ctx.db.mutation.updateAccount({
           where: { id: fo.account.id },
           data: {
             balance: oldAccountBalance
           }
-        })
-      );
-    }
-    if (newAccount && newAccount.balance !== newAccountBalance) {
-      promiseList.push(
+        }),
+      newAccount &&
+        newAccount.balance !== newAccountBalance &&
         ctx.db.mutation.updateAccount({
           where: { id: newAccount.id },
           data: {
             balance: newAccountBalance
           }
-        })
-      );
-    }
-    if (oldToAccountBalance !== fo.toAccount.balance) {
-      promiseList.push(
+        }),
+      oldToAccountBalance !== fo.toAccount.balance &&
         ctx.db.mutation.updateAccount({
           where: { id: fo.toAccount.id },
           data: {
             balance: oldToAccountBalance
           }
-        })
-      );
-    }
-    if (newToAccount && newToAccount.balance !== newToAccountBalance) {
-      promiseList.push(
+        }),
+      newToAccount &&
+        newToAccount.balance !== newToAccountBalance &&
         ctx.db.mutation.updateAccount({
           where: { id: newToAccount.id },
           data: {
             balance: newToAccountBalance
           }
         })
-      );
-    }
-
-    await Promise.all(promiseList);
+    ]);
 
     return ctx.db.mutation
       .updateFinanceOperation(
