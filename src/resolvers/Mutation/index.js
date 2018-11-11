@@ -1,19 +1,22 @@
 const auth = require('./auth');
 const profile = require('./profile');
-const account = require('./account');
 const financeOperation = require('./financeOperation');
 const income = require('./income');
 const expense = require('./expense');
 const transfer = require('./transfer');
 
+const generateCUD = require('./abstract/generateCUD');
+
 const Mutation = {
   ...auth,
   ...profile,
-  ...account,
+  ...generateCUD('Account'),
   ...financeOperation,
   ...income,
   ...expense,
-  ...transfer
+  ...transfer,
+  ...generateCUD('IncomeCategory'),
+  ...generateCUD('ExpenseCategory')
 };
 
 module.exports = Mutation;

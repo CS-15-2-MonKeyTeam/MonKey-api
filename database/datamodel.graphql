@@ -43,15 +43,17 @@ type FinanceOperation {
 type IncomeCategory {
   id: ID! @unique
   name: String!
+  mandatory: Boolean! @default(value: "false")
   public: Boolean! @default(value: "false")
 
-  createdBy: User @relation(name: "IncomeCategoriesByUser")
+  owner: User @relation(name: "IncomeCategoriesByUser")
 }
 
 type ExpenseCategory {
   id: ID! @unique
   name: String!
+  mandatory: Boolean! @default(value: "false")
   public: Boolean! @default(value: "false")
 
-  createdBy: User @relation(name: "ExpenseCategoriesByUser")
+  owner: User @relation(name: "ExpenseCategoriesByUser")
 }

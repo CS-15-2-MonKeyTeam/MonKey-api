@@ -1,5 +1,5 @@
 # source: https://monkey-prisma.herokuapp.com/monkey/dev
-# timestamp: Sun Nov 04 2018 13:43:11 GMT+0200 (Eastern European Standard Time)
+# timestamp: Sun Nov 11 2018 17:24:08 GMT+0200 (Eastern European Standard Time)
 
 type Account implements Node {
   id: ID!
@@ -347,6 +347,7 @@ scalar DateTime
 type ExpenseCategory implements Node {
   id: ID!
   name: String!
+  mandatory: Boolean!
   public: Boolean!
   createdBy(where: UserWhereInput): User
 }
@@ -363,6 +364,7 @@ type ExpenseCategoryConnection {
 
 input ExpenseCategoryCreateInput {
   name: String!
+  mandatory: Boolean
   public: Boolean
   createdBy: UserCreateOneWithoutExpenseCategoriesInput
 }
@@ -379,6 +381,7 @@ input ExpenseCategoryCreateOneInput {
 
 input ExpenseCategoryCreateWithoutCreatedByInput {
   name: String!
+  mandatory: Boolean
   public: Boolean
 }
 
@@ -396,6 +399,8 @@ enum ExpenseCategoryOrderByInput {
   id_DESC
   name_ASC
   name_DESC
+  mandatory_ASC
+  mandatory_DESC
   public_ASC
   public_DESC
   updatedAt_ASC
@@ -407,6 +412,7 @@ enum ExpenseCategoryOrderByInput {
 type ExpenseCategoryPreviousValues {
   id: ID!
   name: String!
+  mandatory: Boolean!
   public: Boolean!
 }
 
@@ -451,12 +457,14 @@ input ExpenseCategorySubscriptionWhereInput {
 
 input ExpenseCategoryUpdateDataInput {
   name: String
+  mandatory: Boolean
   public: Boolean
   createdBy: UserUpdateOneWithoutExpenseCategoriesInput
 }
 
 input ExpenseCategoryUpdateInput {
   name: String
+  mandatory: Boolean
   public: Boolean
   createdBy: UserUpdateOneWithoutExpenseCategoriesInput
 }
@@ -481,6 +489,7 @@ input ExpenseCategoryUpdateOneInput {
 
 input ExpenseCategoryUpdateWithoutCreatedByDataInput {
   name: String
+  mandatory: Boolean
   public: Boolean
 }
 
@@ -589,6 +598,10 @@ input ExpenseCategoryWhereInput {
 
   """All values not ending with the given string."""
   name_not_ends_with: String
+  mandatory: Boolean
+
+  """All values that are not equal to given value."""
+  mandatory_not: Boolean
   public: Boolean
 
   """All values that are not equal to given value."""
@@ -1054,6 +1067,7 @@ input FinanceOperationWhereUniqueInput {
 type IncomeCategory implements Node {
   id: ID!
   name: String!
+  mandatory: Boolean!
   public: Boolean!
   createdBy(where: UserWhereInput): User
 }
@@ -1070,6 +1084,7 @@ type IncomeCategoryConnection {
 
 input IncomeCategoryCreateInput {
   name: String!
+  mandatory: Boolean
   public: Boolean
   createdBy: UserCreateOneWithoutIncomeCategoriesInput
 }
@@ -1086,6 +1101,7 @@ input IncomeCategoryCreateOneInput {
 
 input IncomeCategoryCreateWithoutCreatedByInput {
   name: String!
+  mandatory: Boolean
   public: Boolean
 }
 
@@ -1103,6 +1119,8 @@ enum IncomeCategoryOrderByInput {
   id_DESC
   name_ASC
   name_DESC
+  mandatory_ASC
+  mandatory_DESC
   public_ASC
   public_DESC
   updatedAt_ASC
@@ -1114,6 +1132,7 @@ enum IncomeCategoryOrderByInput {
 type IncomeCategoryPreviousValues {
   id: ID!
   name: String!
+  mandatory: Boolean!
   public: Boolean!
 }
 
@@ -1158,12 +1177,14 @@ input IncomeCategorySubscriptionWhereInput {
 
 input IncomeCategoryUpdateDataInput {
   name: String
+  mandatory: Boolean
   public: Boolean
   createdBy: UserUpdateOneWithoutIncomeCategoriesInput
 }
 
 input IncomeCategoryUpdateInput {
   name: String
+  mandatory: Boolean
   public: Boolean
   createdBy: UserUpdateOneWithoutIncomeCategoriesInput
 }
@@ -1188,6 +1209,7 @@ input IncomeCategoryUpdateOneInput {
 
 input IncomeCategoryUpdateWithoutCreatedByDataInput {
   name: String
+  mandatory: Boolean
   public: Boolean
 }
 
@@ -1296,6 +1318,10 @@ input IncomeCategoryWhereInput {
 
   """All values not ending with the given string."""
   name_not_ends_with: String
+  mandatory: Boolean
+
+  """All values that are not equal to given value."""
+  mandatory_not: Boolean
   public: Boolean
 
   """All values that are not equal to given value."""

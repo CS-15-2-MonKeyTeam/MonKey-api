@@ -22,6 +22,14 @@ type Mutation {
 
   updateProfile(name: String!): User!
 
+  createExpenseCategory(name: String!, mandatory: Boolean): ExpenseCategory!
+  updateExpenseCategory(name: String, mandatory: Boolean): ExpenseCategory!
+  deleteExpenseCategory(id: ID!): ExpenseCategory!
+
+  createIncomeCategory(name: String!, mandatory: Boolean): IncomeCategory!
+  updateIncomeCategory(name: String, mandatory: Boolean): IncomeCategory!
+  deleteIncomeCategory(id: ID!): ExpenseCategory!
+
   createAccount(name: String!, balance: Float): Account!
   deleteAccount(id: ID!): Account!
   updateAccount(id: ID!, name: String!): Account!
