@@ -25,13 +25,17 @@ const expense = {
 
     if (amount <= 0) throw new Error('Amount should be greater then 0.');
 
-    const [account, commonCategoryExists, categoryExists] = await Promise.all([
+    const [account, categories] = await Promise.all([
       ctx.db.query.account({ where: { id: accountId } }, '{ id balance owner { id } }'),
-      categoryId && ctx.db.exists.ExpenseCategory({ id: categoryId, public: true }),
-      categoryId && ctx.db.exists.ExpenseCategory({ id: categoryId, createdBy: { id: userId } })
+      categoryId &&
+        ctx.db.exists.ExpenseCategories({
+          where: {
+            AND: [{ id: categoryId }, { OR: [{ public: true }, { createdBy: { id: userId } }] }]
+          }
+        })
     ]);
 
-    if (categoryId && !commonCategoryExists && !categoryExists) {
+    if (categoryId && !categories.length) {
       throw new Error('Category not found.');
     }
     if (!account || account.owner.id !== userId) {

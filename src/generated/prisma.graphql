@@ -1,5 +1,5 @@
 # source: https://monkey-prisma.herokuapp.com/monkey/dev
-# timestamp: Sun Nov 11 2018 17:24:08 GMT+0200 (Eastern European Standard Time)
+# timestamp: Sun Nov 11 2018 19:05:25 GMT+0200 (Eastern European Standard Time)
 
 type Account implements Node {
   id: ID!
@@ -349,7 +349,7 @@ type ExpenseCategory implements Node {
   name: String!
   mandatory: Boolean!
   public: Boolean!
-  createdBy(where: UserWhereInput): User
+  owner(where: UserWhereInput): User
 }
 
 """A connection to a list of items."""
@@ -366,11 +366,11 @@ input ExpenseCategoryCreateInput {
   name: String!
   mandatory: Boolean
   public: Boolean
-  createdBy: UserCreateOneWithoutExpenseCategoriesInput
+  owner: UserCreateOneWithoutExpenseCategoriesInput
 }
 
-input ExpenseCategoryCreateManyWithoutCreatedByInput {
-  create: [ExpenseCategoryCreateWithoutCreatedByInput!]
+input ExpenseCategoryCreateManyWithoutOwnerInput {
+  create: [ExpenseCategoryCreateWithoutOwnerInput!]
   connect: [ExpenseCategoryWhereUniqueInput!]
 }
 
@@ -379,7 +379,7 @@ input ExpenseCategoryCreateOneInput {
   connect: ExpenseCategoryWhereUniqueInput
 }
 
-input ExpenseCategoryCreateWithoutCreatedByInput {
+input ExpenseCategoryCreateWithoutOwnerInput {
   name: String!
   mandatory: Boolean
   public: Boolean
@@ -459,23 +459,23 @@ input ExpenseCategoryUpdateDataInput {
   name: String
   mandatory: Boolean
   public: Boolean
-  createdBy: UserUpdateOneWithoutExpenseCategoriesInput
+  owner: UserUpdateOneWithoutExpenseCategoriesInput
 }
 
 input ExpenseCategoryUpdateInput {
   name: String
   mandatory: Boolean
   public: Boolean
-  createdBy: UserUpdateOneWithoutExpenseCategoriesInput
+  owner: UserUpdateOneWithoutExpenseCategoriesInput
 }
 
-input ExpenseCategoryUpdateManyWithoutCreatedByInput {
-  create: [ExpenseCategoryCreateWithoutCreatedByInput!]
+input ExpenseCategoryUpdateManyWithoutOwnerInput {
+  create: [ExpenseCategoryCreateWithoutOwnerInput!]
   connect: [ExpenseCategoryWhereUniqueInput!]
   disconnect: [ExpenseCategoryWhereUniqueInput!]
   delete: [ExpenseCategoryWhereUniqueInput!]
-  update: [ExpenseCategoryUpdateWithWhereUniqueWithoutCreatedByInput!]
-  upsert: [ExpenseCategoryUpsertWithWhereUniqueWithoutCreatedByInput!]
+  update: [ExpenseCategoryUpdateWithWhereUniqueWithoutOwnerInput!]
+  upsert: [ExpenseCategoryUpsertWithWhereUniqueWithoutOwnerInput!]
 }
 
 input ExpenseCategoryUpdateOneInput {
@@ -487,15 +487,15 @@ input ExpenseCategoryUpdateOneInput {
   upsert: ExpenseCategoryUpsertNestedInput
 }
 
-input ExpenseCategoryUpdateWithoutCreatedByDataInput {
+input ExpenseCategoryUpdateWithoutOwnerDataInput {
   name: String
   mandatory: Boolean
   public: Boolean
 }
 
-input ExpenseCategoryUpdateWithWhereUniqueWithoutCreatedByInput {
+input ExpenseCategoryUpdateWithWhereUniqueWithoutOwnerInput {
   where: ExpenseCategoryWhereUniqueInput!
-  data: ExpenseCategoryUpdateWithoutCreatedByDataInput!
+  data: ExpenseCategoryUpdateWithoutOwnerDataInput!
 }
 
 input ExpenseCategoryUpsertNestedInput {
@@ -503,10 +503,10 @@ input ExpenseCategoryUpsertNestedInput {
   create: ExpenseCategoryCreateInput!
 }
 
-input ExpenseCategoryUpsertWithWhereUniqueWithoutCreatedByInput {
+input ExpenseCategoryUpsertWithWhereUniqueWithoutOwnerInput {
   where: ExpenseCategoryWhereUniqueInput!
-  update: ExpenseCategoryUpdateWithoutCreatedByDataInput!
-  create: ExpenseCategoryCreateWithoutCreatedByInput!
+  update: ExpenseCategoryUpdateWithoutOwnerDataInput!
+  create: ExpenseCategoryCreateWithoutOwnerInput!
 }
 
 input ExpenseCategoryWhereInput {
@@ -606,7 +606,7 @@ input ExpenseCategoryWhereInput {
 
   """All values that are not equal to given value."""
   public_not: Boolean
-  createdBy: UserWhereInput
+  owner: UserWhereInput
   _MagicalBackRelation_ExpenseCategoryToFinanceOperation_every: FinanceOperationWhereInput
   _MagicalBackRelation_ExpenseCategoryToFinanceOperation_some: FinanceOperationWhereInput
   _MagicalBackRelation_ExpenseCategoryToFinanceOperation_none: FinanceOperationWhereInput
@@ -1069,7 +1069,7 @@ type IncomeCategory implements Node {
   name: String!
   mandatory: Boolean!
   public: Boolean!
-  createdBy(where: UserWhereInput): User
+  owner(where: UserWhereInput): User
 }
 
 """A connection to a list of items."""
@@ -1086,11 +1086,11 @@ input IncomeCategoryCreateInput {
   name: String!
   mandatory: Boolean
   public: Boolean
-  createdBy: UserCreateOneWithoutIncomeCategoriesInput
+  owner: UserCreateOneWithoutIncomeCategoriesInput
 }
 
-input IncomeCategoryCreateManyWithoutCreatedByInput {
-  create: [IncomeCategoryCreateWithoutCreatedByInput!]
+input IncomeCategoryCreateManyWithoutOwnerInput {
+  create: [IncomeCategoryCreateWithoutOwnerInput!]
   connect: [IncomeCategoryWhereUniqueInput!]
 }
 
@@ -1099,7 +1099,7 @@ input IncomeCategoryCreateOneInput {
   connect: IncomeCategoryWhereUniqueInput
 }
 
-input IncomeCategoryCreateWithoutCreatedByInput {
+input IncomeCategoryCreateWithoutOwnerInput {
   name: String!
   mandatory: Boolean
   public: Boolean
@@ -1179,23 +1179,23 @@ input IncomeCategoryUpdateDataInput {
   name: String
   mandatory: Boolean
   public: Boolean
-  createdBy: UserUpdateOneWithoutIncomeCategoriesInput
+  owner: UserUpdateOneWithoutIncomeCategoriesInput
 }
 
 input IncomeCategoryUpdateInput {
   name: String
   mandatory: Boolean
   public: Boolean
-  createdBy: UserUpdateOneWithoutIncomeCategoriesInput
+  owner: UserUpdateOneWithoutIncomeCategoriesInput
 }
 
-input IncomeCategoryUpdateManyWithoutCreatedByInput {
-  create: [IncomeCategoryCreateWithoutCreatedByInput!]
+input IncomeCategoryUpdateManyWithoutOwnerInput {
+  create: [IncomeCategoryCreateWithoutOwnerInput!]
   connect: [IncomeCategoryWhereUniqueInput!]
   disconnect: [IncomeCategoryWhereUniqueInput!]
   delete: [IncomeCategoryWhereUniqueInput!]
-  update: [IncomeCategoryUpdateWithWhereUniqueWithoutCreatedByInput!]
-  upsert: [IncomeCategoryUpsertWithWhereUniqueWithoutCreatedByInput!]
+  update: [IncomeCategoryUpdateWithWhereUniqueWithoutOwnerInput!]
+  upsert: [IncomeCategoryUpsertWithWhereUniqueWithoutOwnerInput!]
 }
 
 input IncomeCategoryUpdateOneInput {
@@ -1207,15 +1207,15 @@ input IncomeCategoryUpdateOneInput {
   upsert: IncomeCategoryUpsertNestedInput
 }
 
-input IncomeCategoryUpdateWithoutCreatedByDataInput {
+input IncomeCategoryUpdateWithoutOwnerDataInput {
   name: String
   mandatory: Boolean
   public: Boolean
 }
 
-input IncomeCategoryUpdateWithWhereUniqueWithoutCreatedByInput {
+input IncomeCategoryUpdateWithWhereUniqueWithoutOwnerInput {
   where: IncomeCategoryWhereUniqueInput!
-  data: IncomeCategoryUpdateWithoutCreatedByDataInput!
+  data: IncomeCategoryUpdateWithoutOwnerDataInput!
 }
 
 input IncomeCategoryUpsertNestedInput {
@@ -1223,10 +1223,10 @@ input IncomeCategoryUpsertNestedInput {
   create: IncomeCategoryCreateInput!
 }
 
-input IncomeCategoryUpsertWithWhereUniqueWithoutCreatedByInput {
+input IncomeCategoryUpsertWithWhereUniqueWithoutOwnerInput {
   where: IncomeCategoryWhereUniqueInput!
-  update: IncomeCategoryUpdateWithoutCreatedByDataInput!
-  create: IncomeCategoryCreateWithoutCreatedByInput!
+  update: IncomeCategoryUpdateWithoutOwnerDataInput!
+  create: IncomeCategoryCreateWithoutOwnerInput!
 }
 
 input IncomeCategoryWhereInput {
@@ -1326,7 +1326,7 @@ input IncomeCategoryWhereInput {
 
   """All values that are not equal to given value."""
   public_not: Boolean
-  createdBy: UserWhereInput
+  owner: UserWhereInput
   _MagicalBackRelation_FinanceOperationToIncomeCategory_every: FinanceOperationWhereInput
   _MagicalBackRelation_FinanceOperationToIncomeCategory_some: FinanceOperationWhereInput
   _MagicalBackRelation_FinanceOperationToIncomeCategory_none: FinanceOperationWhereInput
@@ -1459,8 +1459,8 @@ input UserCreateInput {
   name: String
   accounts: AccountCreateManyWithoutOwnerInput
   financeOperations: FinanceOperationCreateManyWithoutCreatedByInput
-  incomeCategories: IncomeCategoryCreateManyWithoutCreatedByInput
-  expenseCategories: ExpenseCategoryCreateManyWithoutCreatedByInput
+  incomeCategories: IncomeCategoryCreateManyWithoutOwnerInput
+  expenseCategories: ExpenseCategoryCreateManyWithoutOwnerInput
 }
 
 input UserCreateOneWithoutAccountsInput {
@@ -1487,8 +1487,8 @@ input UserCreateWithoutAccountsInput {
   phone: String!
   name: String
   financeOperations: FinanceOperationCreateManyWithoutCreatedByInput
-  incomeCategories: IncomeCategoryCreateManyWithoutCreatedByInput
-  expenseCategories: ExpenseCategoryCreateManyWithoutCreatedByInput
+  incomeCategories: IncomeCategoryCreateManyWithoutOwnerInput
+  expenseCategories: ExpenseCategoryCreateManyWithoutOwnerInput
 }
 
 input UserCreateWithoutExpenseCategoriesInput {
@@ -1496,15 +1496,15 @@ input UserCreateWithoutExpenseCategoriesInput {
   name: String
   accounts: AccountCreateManyWithoutOwnerInput
   financeOperations: FinanceOperationCreateManyWithoutCreatedByInput
-  incomeCategories: IncomeCategoryCreateManyWithoutCreatedByInput
+  incomeCategories: IncomeCategoryCreateManyWithoutOwnerInput
 }
 
 input UserCreateWithoutFinanceOperationsInput {
   phone: String!
   name: String
   accounts: AccountCreateManyWithoutOwnerInput
-  incomeCategories: IncomeCategoryCreateManyWithoutCreatedByInput
-  expenseCategories: ExpenseCategoryCreateManyWithoutCreatedByInput
+  incomeCategories: IncomeCategoryCreateManyWithoutOwnerInput
+  expenseCategories: ExpenseCategoryCreateManyWithoutOwnerInput
 }
 
 input UserCreateWithoutIncomeCategoriesInput {
@@ -1512,7 +1512,7 @@ input UserCreateWithoutIncomeCategoriesInput {
   name: String
   accounts: AccountCreateManyWithoutOwnerInput
   financeOperations: FinanceOperationCreateManyWithoutCreatedByInput
-  expenseCategories: ExpenseCategoryCreateManyWithoutCreatedByInput
+  expenseCategories: ExpenseCategoryCreateManyWithoutOwnerInput
 }
 
 """An edge in a connection."""
@@ -1587,8 +1587,8 @@ input UserUpdateInput {
   name: String
   accounts: AccountUpdateManyWithoutOwnerInput
   financeOperations: FinanceOperationUpdateManyWithoutCreatedByInput
-  incomeCategories: IncomeCategoryUpdateManyWithoutCreatedByInput
-  expenseCategories: ExpenseCategoryUpdateManyWithoutCreatedByInput
+  incomeCategories: IncomeCategoryUpdateManyWithoutOwnerInput
+  expenseCategories: ExpenseCategoryUpdateManyWithoutOwnerInput
 }
 
 input UserUpdateOneWithoutAccountsInput {
@@ -1629,8 +1629,8 @@ input UserUpdateWithoutAccountsDataInput {
   phone: String
   name: String
   financeOperations: FinanceOperationUpdateManyWithoutCreatedByInput
-  incomeCategories: IncomeCategoryUpdateManyWithoutCreatedByInput
-  expenseCategories: ExpenseCategoryUpdateManyWithoutCreatedByInput
+  incomeCategories: IncomeCategoryUpdateManyWithoutOwnerInput
+  expenseCategories: ExpenseCategoryUpdateManyWithoutOwnerInput
 }
 
 input UserUpdateWithoutExpenseCategoriesDataInput {
@@ -1638,15 +1638,15 @@ input UserUpdateWithoutExpenseCategoriesDataInput {
   name: String
   accounts: AccountUpdateManyWithoutOwnerInput
   financeOperations: FinanceOperationUpdateManyWithoutCreatedByInput
-  incomeCategories: IncomeCategoryUpdateManyWithoutCreatedByInput
+  incomeCategories: IncomeCategoryUpdateManyWithoutOwnerInput
 }
 
 input UserUpdateWithoutFinanceOperationsDataInput {
   phone: String
   name: String
   accounts: AccountUpdateManyWithoutOwnerInput
-  incomeCategories: IncomeCategoryUpdateManyWithoutCreatedByInput
-  expenseCategories: ExpenseCategoryUpdateManyWithoutCreatedByInput
+  incomeCategories: IncomeCategoryUpdateManyWithoutOwnerInput
+  expenseCategories: ExpenseCategoryUpdateManyWithoutOwnerInput
 }
 
 input UserUpdateWithoutIncomeCategoriesDataInput {
@@ -1654,7 +1654,7 @@ input UserUpdateWithoutIncomeCategoriesDataInput {
   name: String
   accounts: AccountUpdateManyWithoutOwnerInput
   financeOperations: FinanceOperationUpdateManyWithoutCreatedByInput
-  expenseCategories: ExpenseCategoryUpdateManyWithoutCreatedByInput
+  expenseCategories: ExpenseCategoryUpdateManyWithoutOwnerInput
 }
 
 input UserUpsertWithoutAccountsInput {
