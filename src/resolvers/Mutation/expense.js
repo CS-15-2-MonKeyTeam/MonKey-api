@@ -28,9 +28,9 @@ const expense = {
     const [account, categories] = await Promise.all([
       ctx.db.query.account({ where: { id: accountId } }, '{ id balance owner { id } }'),
       categoryId &&
-        ctx.db.exists.ExpenseCategories({
+        ctx.db.query.expenseCategories({
           where: {
-            AND: [{ id: categoryId }, { OR: [{ public: true }, { createdBy: { id: userId } }] }]
+            AND: [{ id: categoryId }, { OR: [{ public: true }, { owner: { id: userId } }] }]
           }
         })
     ]);
@@ -55,7 +55,7 @@ const expense = {
             date,
             comment,
             account: { connect: { id: accountId } },
-            createdBy: { connect: { id: userId } },
+            owner: { connect: { id: userId } },
             expense_payee: payee,
             expense_category: categoryId && { connect: { id: categoryId } }
           }
@@ -79,9 +79,9 @@ const expense = {
 
     const fo = await ctx.db.query.financeOperation(
       { where: { id } },
-      '{ id amount expense_payee createdBy { id } account { id balance } }'
+      '{ id amount expense_payee owner { id } account { id balance } }'
     );
-    if (!fo || fo.createdBy.id !== userId || typeof fo.expense_payee !== 'string') {
+    if (!fo || fo.owner.id !== userId || typeof fo.expense_payee !== 'string') {
       throw new Error('Expense not found.');
     }
 

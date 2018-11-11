@@ -23,9 +23,9 @@ const financeOperation = {
     const userId = getUserId(ctx);
     const fo = await ctx.db.query.financeOperation(
       { where: { id } },
-      '{ id amount expense_payee income_place createdBy { id } account { id balance } transfer_toAccount { id balance } }'
+      '{ id amount expense_payee income_place owner { id } account { id balance } transfer_toAccount { id balance } }'
     );
-    if (!fo || fo.createdBy.id !== userId) {
+    if (!fo || fo.owner.id !== userId) {
       throw new Error("Finance operation not found or you're not the owner.");
     }
 

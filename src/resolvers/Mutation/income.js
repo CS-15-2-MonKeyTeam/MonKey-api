@@ -28,9 +28,9 @@ const income = {
     const [account, categories] = await Promise.all([
       ctx.db.query.account({ where: { id: accountId } }, '{ id balance owner { id } }'),
       categoryId &&
-        ctx.db.exists.ExpenseCategories({
+        ctx.db.query.incomeCategories({
           where: {
-            AND: [{ id: categoryId }, { OR: [{ public: true }, { createdBy: { id: userId } }] }]
+            AND: [{ id: categoryId }, { OR: [{ public: true }, { owner: { id: userId } }] }]
           }
         })
     ]);
@@ -55,7 +55,7 @@ const income = {
             date,
             comment,
             account: { connect: { id: accountId } },
-            createdBy: { connect: { id: userId } },
+            owner: { connect: { id: userId } },
             income_place: place,
             income_category: categoryId && { connect: { id: categoryId } }
           }
@@ -79,9 +79,9 @@ const income = {
 
     const fo = await ctx.db.query.financeOperation(
       { where: { id } },
-      '{ id amount income_place createdBy { id } account { id balance } }'
+      '{ id amount income_place owner { id } account { id balance } }'
     );
-    if (!fo || fo.createdBy.id !== userId || typeof fo.income_place !== 'string') {
+    if (!fo || fo.owner.id !== userId || typeof fo.income_place !== 'string') {
       throw new Error('Income not found.');
     }
 

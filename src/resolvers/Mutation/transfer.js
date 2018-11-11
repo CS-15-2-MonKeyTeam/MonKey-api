@@ -43,7 +43,7 @@ const transfer = {
             date,
             comment,
             account: { connect: { id: accountId } },
-            createdBy: { connect: { id: userId } },
+            owner: { connect: { id: userId } },
             transfer_toAccount: { connect: { id: toAccountId } }
           }
         },
@@ -61,10 +61,10 @@ const transfer = {
 
     const fo = await ctx.db.query.financeOperation(
       { where: { id } },
-      '{ id amount createdBy { id } account { id balance } toAccount { id } }'
+      '{ id amount owner { id } account { id balance } toAccount { id } }'
     );
 
-    if (!fo || fo.createdBy.id !== userId || !fo.toAccount) {
+    if (!fo || fo.owner.id !== userId || !fo.toAccount) {
       throw new Error('Transfer not found.');
     }
 

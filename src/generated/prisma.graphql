@@ -1,5 +1,5 @@
 # source: https://monkey-prisma.herokuapp.com/monkey/dev
-# timestamp: Sun Nov 11 2018 19:05:25 GMT+0200 (Eastern European Standard Time)
+# timestamp: Sun Nov 11 2018 20:06:37 GMT+0200 (Eastern European Standard Time)
 
 type Account implements Node {
   id: ID!
@@ -621,7 +621,7 @@ type FinanceOperation implements Node {
   amount: Float!
   date: DateTime!
   comment: String
-  createdBy(where: UserWhereInput): User!
+  owner(where: UserWhereInput): User!
   account(where: AccountWhereInput): Account!
   expense_payee: String
   expense_category(where: ExpenseCategoryWhereInput): ExpenseCategory
@@ -646,7 +646,7 @@ input FinanceOperationCreateInput {
   comment: String
   expense_payee: String
   income_place: String
-  createdBy: UserCreateOneWithoutFinanceOperationsInput!
+  owner: UserCreateOneWithoutFinanceOperationsInput!
   account: AccountCreateOneWithoutFinanceOperationsInput!
   expense_category: ExpenseCategoryCreateOneInput
   income_category: IncomeCategoryCreateOneInput
@@ -658,8 +658,8 @@ input FinanceOperationCreateManyWithoutAccountInput {
   connect: [FinanceOperationWhereUniqueInput!]
 }
 
-input FinanceOperationCreateManyWithoutCreatedByInput {
-  create: [FinanceOperationCreateWithoutCreatedByInput!]
+input FinanceOperationCreateManyWithoutOwnerInput {
+  create: [FinanceOperationCreateWithoutOwnerInput!]
   connect: [FinanceOperationWhereUniqueInput!]
 }
 
@@ -669,13 +669,13 @@ input FinanceOperationCreateWithoutAccountInput {
   comment: String
   expense_payee: String
   income_place: String
-  createdBy: UserCreateOneWithoutFinanceOperationsInput!
+  owner: UserCreateOneWithoutFinanceOperationsInput!
   expense_category: ExpenseCategoryCreateOneInput
   income_category: IncomeCategoryCreateOneInput
   transfer_toAccount: AccountCreateOneInput
 }
 
-input FinanceOperationCreateWithoutCreatedByInput {
+input FinanceOperationCreateWithoutOwnerInput {
   amount: Float!
   date: DateTime!
   comment: String
@@ -769,7 +769,7 @@ input FinanceOperationUpdateInput {
   comment: String
   expense_payee: String
   income_place: String
-  createdBy: UserUpdateOneWithoutFinanceOperationsInput
+  owner: UserUpdateOneWithoutFinanceOperationsInput
   account: AccountUpdateOneWithoutFinanceOperationsInput
   expense_category: ExpenseCategoryUpdateOneInput
   income_category: IncomeCategoryUpdateOneInput
@@ -785,13 +785,13 @@ input FinanceOperationUpdateManyWithoutAccountInput {
   upsert: [FinanceOperationUpsertWithWhereUniqueWithoutAccountInput!]
 }
 
-input FinanceOperationUpdateManyWithoutCreatedByInput {
-  create: [FinanceOperationCreateWithoutCreatedByInput!]
+input FinanceOperationUpdateManyWithoutOwnerInput {
+  create: [FinanceOperationCreateWithoutOwnerInput!]
   connect: [FinanceOperationWhereUniqueInput!]
   disconnect: [FinanceOperationWhereUniqueInput!]
   delete: [FinanceOperationWhereUniqueInput!]
-  update: [FinanceOperationUpdateWithWhereUniqueWithoutCreatedByInput!]
-  upsert: [FinanceOperationUpsertWithWhereUniqueWithoutCreatedByInput!]
+  update: [FinanceOperationUpdateWithWhereUniqueWithoutOwnerInput!]
+  upsert: [FinanceOperationUpsertWithWhereUniqueWithoutOwnerInput!]
 }
 
 input FinanceOperationUpdateWithoutAccountDataInput {
@@ -800,13 +800,13 @@ input FinanceOperationUpdateWithoutAccountDataInput {
   comment: String
   expense_payee: String
   income_place: String
-  createdBy: UserUpdateOneWithoutFinanceOperationsInput
+  owner: UserUpdateOneWithoutFinanceOperationsInput
   expense_category: ExpenseCategoryUpdateOneInput
   income_category: IncomeCategoryUpdateOneInput
   transfer_toAccount: AccountUpdateOneInput
 }
 
-input FinanceOperationUpdateWithoutCreatedByDataInput {
+input FinanceOperationUpdateWithoutOwnerDataInput {
   amount: Float
   date: DateTime
   comment: String
@@ -823,9 +823,9 @@ input FinanceOperationUpdateWithWhereUniqueWithoutAccountInput {
   data: FinanceOperationUpdateWithoutAccountDataInput!
 }
 
-input FinanceOperationUpdateWithWhereUniqueWithoutCreatedByInput {
+input FinanceOperationUpdateWithWhereUniqueWithoutOwnerInput {
   where: FinanceOperationWhereUniqueInput!
-  data: FinanceOperationUpdateWithoutCreatedByDataInput!
+  data: FinanceOperationUpdateWithoutOwnerDataInput!
 }
 
 input FinanceOperationUpsertWithWhereUniqueWithoutAccountInput {
@@ -834,10 +834,10 @@ input FinanceOperationUpsertWithWhereUniqueWithoutAccountInput {
   create: FinanceOperationCreateWithoutAccountInput!
 }
 
-input FinanceOperationUpsertWithWhereUniqueWithoutCreatedByInput {
+input FinanceOperationUpsertWithWhereUniqueWithoutOwnerInput {
   where: FinanceOperationWhereUniqueInput!
-  update: FinanceOperationUpdateWithoutCreatedByDataInput!
-  create: FinanceOperationCreateWithoutCreatedByInput!
+  update: FinanceOperationUpdateWithoutOwnerDataInput!
+  create: FinanceOperationCreateWithoutOwnerInput!
 }
 
 input FinanceOperationWhereInput {
@@ -1053,7 +1053,7 @@ input FinanceOperationWhereInput {
 
   """All values not ending with the given string."""
   income_place_not_ends_with: String
-  createdBy: UserWhereInput
+  owner: UserWhereInput
   account: AccountWhereInput
   expense_category: ExpenseCategoryWhereInput
   income_category: IncomeCategoryWhereInput
@@ -1458,7 +1458,7 @@ input UserCreateInput {
   phone: String!
   name: String
   accounts: AccountCreateManyWithoutOwnerInput
-  financeOperations: FinanceOperationCreateManyWithoutCreatedByInput
+  financeOperations: FinanceOperationCreateManyWithoutOwnerInput
   incomeCategories: IncomeCategoryCreateManyWithoutOwnerInput
   expenseCategories: ExpenseCategoryCreateManyWithoutOwnerInput
 }
@@ -1486,7 +1486,7 @@ input UserCreateOneWithoutIncomeCategoriesInput {
 input UserCreateWithoutAccountsInput {
   phone: String!
   name: String
-  financeOperations: FinanceOperationCreateManyWithoutCreatedByInput
+  financeOperations: FinanceOperationCreateManyWithoutOwnerInput
   incomeCategories: IncomeCategoryCreateManyWithoutOwnerInput
   expenseCategories: ExpenseCategoryCreateManyWithoutOwnerInput
 }
@@ -1495,7 +1495,7 @@ input UserCreateWithoutExpenseCategoriesInput {
   phone: String!
   name: String
   accounts: AccountCreateManyWithoutOwnerInput
-  financeOperations: FinanceOperationCreateManyWithoutCreatedByInput
+  financeOperations: FinanceOperationCreateManyWithoutOwnerInput
   incomeCategories: IncomeCategoryCreateManyWithoutOwnerInput
 }
 
@@ -1511,7 +1511,7 @@ input UserCreateWithoutIncomeCategoriesInput {
   phone: String!
   name: String
   accounts: AccountCreateManyWithoutOwnerInput
-  financeOperations: FinanceOperationCreateManyWithoutCreatedByInput
+  financeOperations: FinanceOperationCreateManyWithoutOwnerInput
   expenseCategories: ExpenseCategoryCreateManyWithoutOwnerInput
 }
 
@@ -1586,7 +1586,7 @@ input UserUpdateInput {
   phone: String
   name: String
   accounts: AccountUpdateManyWithoutOwnerInput
-  financeOperations: FinanceOperationUpdateManyWithoutCreatedByInput
+  financeOperations: FinanceOperationUpdateManyWithoutOwnerInput
   incomeCategories: IncomeCategoryUpdateManyWithoutOwnerInput
   expenseCategories: ExpenseCategoryUpdateManyWithoutOwnerInput
 }
@@ -1628,7 +1628,7 @@ input UserUpdateOneWithoutIncomeCategoriesInput {
 input UserUpdateWithoutAccountsDataInput {
   phone: String
   name: String
-  financeOperations: FinanceOperationUpdateManyWithoutCreatedByInput
+  financeOperations: FinanceOperationUpdateManyWithoutOwnerInput
   incomeCategories: IncomeCategoryUpdateManyWithoutOwnerInput
   expenseCategories: ExpenseCategoryUpdateManyWithoutOwnerInput
 }
@@ -1637,7 +1637,7 @@ input UserUpdateWithoutExpenseCategoriesDataInput {
   phone: String
   name: String
   accounts: AccountUpdateManyWithoutOwnerInput
-  financeOperations: FinanceOperationUpdateManyWithoutCreatedByInput
+  financeOperations: FinanceOperationUpdateManyWithoutOwnerInput
   incomeCategories: IncomeCategoryUpdateManyWithoutOwnerInput
 }
 
@@ -1653,7 +1653,7 @@ input UserUpdateWithoutIncomeCategoriesDataInput {
   phone: String
   name: String
   accounts: AccountUpdateManyWithoutOwnerInput
-  financeOperations: FinanceOperationUpdateManyWithoutCreatedByInput
+  financeOperations: FinanceOperationUpdateManyWithoutOwnerInput
   expenseCategories: ExpenseCategoryUpdateManyWithoutOwnerInput
 }
 

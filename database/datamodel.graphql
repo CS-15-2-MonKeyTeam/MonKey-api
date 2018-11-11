@@ -27,7 +27,7 @@ type FinanceOperation {
   date: DateTime!
   comment: String
 
-  createdBy: User! @relation(name: "FinanceOperationsByUser")
+  owner: User! @relation(name: "FinanceOperationsByUser")
   account: Account! @relation(name: "FinanceOperationsByAccount")
 
   # custom fields: Expense

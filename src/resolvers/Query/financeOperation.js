@@ -15,7 +15,7 @@ const financeOperation = {
     return ctx.db.query
       .financeOperations(
         {
-          where: { createdBy: { id: userId } }
+          where: { owner: { id: userId } }
         },
         makeSelection(info)
       )

@@ -4,7 +4,7 @@
 # import IncomeCategory from "./generated/prisma.graphql"
 
 type Query {
-  me: User
+  me: User # TODO: if me.expenseCategories/me.incomeCategories then add public categories
   accounts: [Account!]!
   financeOperations: [FinanceOperation!]!
   # TODO: financeOperations params
@@ -58,7 +58,7 @@ interface FinanceOperation {
   amount: Float!
   date: DateTime!
   comment: String
-  createdBy: User!
+  owner: User!
   account: Account!
 }
 
@@ -68,7 +68,7 @@ type Expense implements FinanceOperation {
   amount: Float!
   date: DateTime!
   comment: String
-  createdBy: User!
+  owner: User!
   account: Account!
   # custom fields
   payee: String
@@ -81,7 +81,7 @@ type Income implements FinanceOperation {
   amount: Float!
   date: DateTime!
   comment: String
-  createdBy: User!
+  owner: User!
   account: Account!
   # custom fields
   place: String
@@ -94,7 +94,7 @@ type Transfer implements FinanceOperation {
   amount: Float!
   date: DateTime!
   comment: String
-  createdBy: User!
+  owner: User!
   account: Account!
   # custom fields
   toAccount: Account!
