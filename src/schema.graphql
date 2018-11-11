@@ -15,6 +15,8 @@ type Query {
   # before: String
   # first: Int
   # last: Int
+  expenseCategories: [ExpenseCategory!]!
+  incomeCategories: [IncomeCategory!]!
 }
 
 type Mutation {
