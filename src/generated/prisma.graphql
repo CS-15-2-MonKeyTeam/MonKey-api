@@ -1,5 +1,5 @@
 # source: https://monkey-prisma.herokuapp.com/monkey/dev
-# timestamp: Sun Nov 11 2018 20:06:37 GMT+0200 (Eastern European Standard Time)
+# timestamp: Sun Nov 18 2018 22:00:30 GMT+0200 (Eastern European Standard Time)
 
 type Account implements Node {
   id: ID!
@@ -348,7 +348,6 @@ type ExpenseCategory implements Node {
   id: ID!
   name: String!
   mandatory: Boolean!
-  public: Boolean!
   owner(where: UserWhereInput): User
 }
 
@@ -365,7 +364,6 @@ type ExpenseCategoryConnection {
 input ExpenseCategoryCreateInput {
   name: String!
   mandatory: Boolean
-  public: Boolean
   owner: UserCreateOneWithoutExpenseCategoriesInput
 }
 
@@ -382,7 +380,6 @@ input ExpenseCategoryCreateOneInput {
 input ExpenseCategoryCreateWithoutOwnerInput {
   name: String!
   mandatory: Boolean
-  public: Boolean
 }
 
 """An edge in a connection."""
@@ -401,8 +398,6 @@ enum ExpenseCategoryOrderByInput {
   name_DESC
   mandatory_ASC
   mandatory_DESC
-  public_ASC
-  public_DESC
   updatedAt_ASC
   updatedAt_DESC
   createdAt_ASC
@@ -413,7 +408,6 @@ type ExpenseCategoryPreviousValues {
   id: ID!
   name: String!
   mandatory: Boolean!
-  public: Boolean!
 }
 
 type ExpenseCategorySubscriptionPayload {
@@ -458,14 +452,12 @@ input ExpenseCategorySubscriptionWhereInput {
 input ExpenseCategoryUpdateDataInput {
   name: String
   mandatory: Boolean
-  public: Boolean
   owner: UserUpdateOneWithoutExpenseCategoriesInput
 }
 
 input ExpenseCategoryUpdateInput {
   name: String
   mandatory: Boolean
-  public: Boolean
   owner: UserUpdateOneWithoutExpenseCategoriesInput
 }
 
@@ -490,7 +482,6 @@ input ExpenseCategoryUpdateOneInput {
 input ExpenseCategoryUpdateWithoutOwnerDataInput {
   name: String
   mandatory: Boolean
-  public: Boolean
 }
 
 input ExpenseCategoryUpdateWithWhereUniqueWithoutOwnerInput {
@@ -602,10 +593,6 @@ input ExpenseCategoryWhereInput {
 
   """All values that are not equal to given value."""
   mandatory_not: Boolean
-  public: Boolean
-
-  """All values that are not equal to given value."""
-  public_not: Boolean
   owner: UserWhereInput
   _MagicalBackRelation_ExpenseCategoryToFinanceOperation_every: FinanceOperationWhereInput
   _MagicalBackRelation_ExpenseCategoryToFinanceOperation_some: FinanceOperationWhereInput
@@ -1068,7 +1055,6 @@ type IncomeCategory implements Node {
   id: ID!
   name: String!
   mandatory: Boolean!
-  public: Boolean!
   owner(where: UserWhereInput): User
 }
 
@@ -1085,7 +1071,6 @@ type IncomeCategoryConnection {
 input IncomeCategoryCreateInput {
   name: String!
   mandatory: Boolean
-  public: Boolean
   owner: UserCreateOneWithoutIncomeCategoriesInput
 }
 
@@ -1102,7 +1087,6 @@ input IncomeCategoryCreateOneInput {
 input IncomeCategoryCreateWithoutOwnerInput {
   name: String!
   mandatory: Boolean
-  public: Boolean
 }
 
 """An edge in a connection."""
@@ -1121,8 +1105,6 @@ enum IncomeCategoryOrderByInput {
   name_DESC
   mandatory_ASC
   mandatory_DESC
-  public_ASC
-  public_DESC
   updatedAt_ASC
   updatedAt_DESC
   createdAt_ASC
@@ -1133,7 +1115,6 @@ type IncomeCategoryPreviousValues {
   id: ID!
   name: String!
   mandatory: Boolean!
-  public: Boolean!
 }
 
 type IncomeCategorySubscriptionPayload {
@@ -1178,14 +1159,12 @@ input IncomeCategorySubscriptionWhereInput {
 input IncomeCategoryUpdateDataInput {
   name: String
   mandatory: Boolean
-  public: Boolean
   owner: UserUpdateOneWithoutIncomeCategoriesInput
 }
 
 input IncomeCategoryUpdateInput {
   name: String
   mandatory: Boolean
-  public: Boolean
   owner: UserUpdateOneWithoutIncomeCategoriesInput
 }
 
@@ -1210,7 +1189,6 @@ input IncomeCategoryUpdateOneInput {
 input IncomeCategoryUpdateWithoutOwnerDataInput {
   name: String
   mandatory: Boolean
-  public: Boolean
 }
 
 input IncomeCategoryUpdateWithWhereUniqueWithoutOwnerInput {
@@ -1322,10 +1300,6 @@ input IncomeCategoryWhereInput {
 
   """All values that are not equal to given value."""
   mandatory_not: Boolean
-  public: Boolean
-
-  """All values that are not equal to given value."""
-  public_not: Boolean
   owner: UserWhereInput
   _MagicalBackRelation_FinanceOperationToIncomeCategory_every: FinanceOperationWhereInput
   _MagicalBackRelation_FinanceOperationToIncomeCategory_some: FinanceOperationWhereInput

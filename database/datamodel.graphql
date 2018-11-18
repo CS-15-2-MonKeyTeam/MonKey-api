@@ -44,7 +44,6 @@ type IncomeCategory {
   id: ID! @unique
   name: String!
   mandatory: Boolean! @default(value: "false")
-  public: Boolean! @default(value: "false")
 
   owner: User @relation(name: "IncomeCategoriesByUser")
 }
@@ -53,7 +52,6 @@ type ExpenseCategory {
   id: ID! @unique
   name: String!
   mandatory: Boolean! @default(value: "false")
-  public: Boolean! @default(value: "false")
 
   owner: User @relation(name: "ExpenseCategoriesByUser")
 }

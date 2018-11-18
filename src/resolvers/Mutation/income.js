@@ -30,7 +30,7 @@ const income = {
       categoryId &&
         ctx.db.query.incomeCategories({
           where: {
-            AND: [{ id: categoryId }, { OR: [{ public: true }, { owner: { id: userId } }] }]
+            AND: [{ id: categoryId }, { owner: { id: userId } }]
           }
         })
     ]);

@@ -4,7 +4,7 @@
 # import IncomeCategory from "./generated/prisma.graphql"
 
 type Query {
-  me: User # TODO: if me.expenseCategories/me.incomeCategories then add public categories
+  me: User
   accounts: [Account!]!
   financeOperations: [FinanceOperation!]!
   # TODO: financeOperations params

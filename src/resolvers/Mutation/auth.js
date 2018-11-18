@@ -1,6 +1,11 @@
 const jwt = require('jsonwebtoken');
 const axios = require('axios');
 
+const {
+  defaultIncomeCategories,
+  defaultExpenseCategories,
+  defaultAccounts
+} = require('../../constants/content');
 const { ACCOUNT_KIT_API_URL } = require('../../constants');
 
 const auth = {
@@ -28,7 +33,13 @@ const auth = {
 
     if (!user) {
       user = await ctx.db.mutation.createUser({
-        data: { phone, name }
+        data: {
+          phone,
+          name,
+          accounts: { create: defaultAccounts },
+          incomeCategories: { create: defaultIncomeCategories },
+          expenseCategories: { create: defaultExpenseCategories }
+        }
       });
     }
 

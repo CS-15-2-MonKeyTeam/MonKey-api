@@ -30,7 +30,7 @@ const expense = {
       categoryId &&
         ctx.db.query.expenseCategories({
           where: {
-            AND: [{ id: categoryId }, { OR: [{ public: true }, { owner: { id: userId } }] }]
+            AND: [{ id: categoryId }, { owner: { id: userId } }]
           }
         })
     ]);
