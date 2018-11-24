@@ -52,10 +52,15 @@ const makeSelectionList = info =>
     R.prop('fieldNodes')
   )(info);
 
-const formatPrimitiveFields = R.compose(
-  R.fromPairs,
-  R.map(([k, v]) => [R.replace(/^.*_/, '', k), v]),
-  R.toPairs
-);
+const formatPrimitiveFields = data => {
+  const res = {};
+  R.forEachObjIndexed((v, k) => {
+    const formatedKey = R.replace(/^.*_/, '', k);
+    if (R.isNil(res[formatedKey])) {
+      res[formatedKey] = v;
+    }
+  })(data);
+  return res;
+};
 
 module.exports = { interfaces, makeSelectionList, formatPrimitiveFields };
