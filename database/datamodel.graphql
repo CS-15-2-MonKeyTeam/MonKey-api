@@ -7,7 +7,7 @@ type User {
   # currency: String!
 
   accounts: [Account!]! @relation(name: "AccountsByUser", onDelete: CASCADE)
-  financeOperations: [FinanceOperation!]! @relation(name: "FinanceOperationsByUser", onDelete: CASCADE)
+  financeOperations: [FinanceOperationRaw!]! @relation(name: "FinanceOperationsByUser", onDelete: CASCADE)
   incomeCategories: [IncomeCategory!]! @relation(name: "IncomeCategoriesByUser", onDelete: CASCADE)
   expenseCategories: [ExpenseCategory!]! @relation(name: "ExpenseCategoriesByUser", onDelete: CASCADE)
 }
@@ -18,10 +18,10 @@ type Account {
   balance: Float! @default(value: 0)
 
   owner: User! @relation(name: "AccountsByUser")
-  financeOperations: [FinanceOperation!]! @relation(name: "FinanceOperationsByAccount", onDelete: CASCADE)
+  financeOperations: [FinanceOperationRaw!]! @relation(name: "FinanceOperationsByAccount", onDelete: CASCADE)
 }
 
-type FinanceOperation {
+type FinanceOperationRaw {
   id: ID! @unique
   amount: Float!
   date: DateTime!

@@ -36,7 +36,7 @@ const transfer = {
     ]);
 
     return ctx.db.mutation
-      .createFinanceOperation(
+      .createFinanceOperationRaw(
         {
           data: {
             amount,

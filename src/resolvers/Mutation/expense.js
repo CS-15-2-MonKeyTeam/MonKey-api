@@ -48,7 +48,7 @@ const expense = {
     });
 
     return ctx.db.mutation
-      .createFinanceOperation(
+      .createFinanceOperationRaw(
         {
           data: {
             amount,
@@ -77,7 +77,7 @@ const expense = {
       throw new Error('Amount should be greater then 0.');
     }
 
-    const fo = await ctx.db.query.financeOperation(
+    const fo = await ctx.db.query.financeOperationRaw(
       { where: { id } },
       '{ id amount expense_payee owner { id } account { id balance } }'
     );

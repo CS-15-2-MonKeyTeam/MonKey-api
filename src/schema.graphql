@@ -2,6 +2,7 @@
 # import Account from "./generated/prisma.graphql"
 # import ExpenseCategory from "./generated/prisma.graphql"
 # import IncomeCategory from "./generated/prisma.graphql"
+# import FinanceOperationRaw from "./generated/prisma.graphql"
 
 type Query {
   me: User
@@ -16,6 +17,17 @@ type Query {
     first: Int
     last: Int
   ): [FinanceOperation!]!
+
+  financeOperationsRaw(
+    type: FinanceOperationType
+    categoryId: ID
+    date: DateTime
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [FinanceOperationRaw!]!
 
   expenseCategories: [ExpenseCategory!]!
   incomeCategories: [IncomeCategory!]!

@@ -1,12 +1,12 @@
 # source: https://monkey-prisma.herokuapp.com/monkey/dev
-# timestamp: Sun Nov 18 2018 22:00:30 GMT+0200 (Eastern European Standard Time)
+# timestamp: Sun Dec 09 2018 21:08:02 GMT+0200 (Eastern European Standard Time)
 
 type Account implements Node {
   id: ID!
   name: String!
   balance: Float!
   owner(where: UserWhereInput): User!
-  financeOperations(where: FinanceOperationWhereInput, orderBy: FinanceOperationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [FinanceOperation!]
+  financeOperations(where: FinanceOperationRawWhereInput, orderBy: FinanceOperationRawOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [FinanceOperationRaw!]
 }
 
 """A connection to a list of items."""
@@ -23,7 +23,7 @@ input AccountCreateInput {
   name: String!
   balance: Float
   owner: UserCreateOneWithoutAccountsInput!
-  financeOperations: FinanceOperationCreateManyWithoutAccountInput
+  financeOperations: FinanceOperationRawCreateManyWithoutAccountInput
 }
 
 input AccountCreateManyWithoutOwnerInput {
@@ -50,7 +50,7 @@ input AccountCreateWithoutFinanceOperationsInput {
 input AccountCreateWithoutOwnerInput {
   name: String!
   balance: Float
-  financeOperations: FinanceOperationCreateManyWithoutAccountInput
+  financeOperations: FinanceOperationRawCreateManyWithoutAccountInput
 }
 
 """An edge in a connection."""
@@ -124,14 +124,14 @@ input AccountUpdateDataInput {
   name: String
   balance: Float
   owner: UserUpdateOneWithoutAccountsInput
-  financeOperations: FinanceOperationUpdateManyWithoutAccountInput
+  financeOperations: FinanceOperationRawUpdateManyWithoutAccountInput
 }
 
 input AccountUpdateInput {
   name: String
   balance: Float
   owner: UserUpdateOneWithoutAccountsInput
-  financeOperations: FinanceOperationUpdateManyWithoutAccountInput
+  financeOperations: FinanceOperationRawUpdateManyWithoutAccountInput
 }
 
 input AccountUpdateManyWithoutOwnerInput {
@@ -169,7 +169,7 @@ input AccountUpdateWithoutFinanceOperationsDataInput {
 input AccountUpdateWithoutOwnerDataInput {
   name: String
   balance: Float
-  financeOperations: FinanceOperationUpdateManyWithoutAccountInput
+  financeOperations: FinanceOperationRawUpdateManyWithoutAccountInput
 }
 
 input AccountUpdateWithWhereUniqueWithoutOwnerInput {
@@ -305,12 +305,12 @@ input AccountWhereInput {
   """All values greater than or equal the given value."""
   balance_gte: Float
   owner: UserWhereInput
-  financeOperations_every: FinanceOperationWhereInput
-  financeOperations_some: FinanceOperationWhereInput
-  financeOperations_none: FinanceOperationWhereInput
-  _MagicalBackRelation_TransferToAccount_every: FinanceOperationWhereInput
-  _MagicalBackRelation_TransferToAccount_some: FinanceOperationWhereInput
-  _MagicalBackRelation_TransferToAccount_none: FinanceOperationWhereInput
+  financeOperations_every: FinanceOperationRawWhereInput
+  financeOperations_some: FinanceOperationRawWhereInput
+  financeOperations_none: FinanceOperationRawWhereInput
+  _MagicalBackRelation_TransferToAccount_every: FinanceOperationRawWhereInput
+  _MagicalBackRelation_TransferToAccount_some: FinanceOperationRawWhereInput
+  _MagicalBackRelation_TransferToAccount_none: FinanceOperationRawWhereInput
 }
 
 input AccountWhereUniqueInput {
@@ -325,7 +325,7 @@ type AggregateExpenseCategory {
   count: Int!
 }
 
-type AggregateFinanceOperation {
+type AggregateFinanceOperationRaw {
   count: Int!
 }
 
@@ -594,16 +594,16 @@ input ExpenseCategoryWhereInput {
   """All values that are not equal to given value."""
   mandatory_not: Boolean
   owner: UserWhereInput
-  _MagicalBackRelation_ExpenseCategoryToFinanceOperation_every: FinanceOperationWhereInput
-  _MagicalBackRelation_ExpenseCategoryToFinanceOperation_some: FinanceOperationWhereInput
-  _MagicalBackRelation_ExpenseCategoryToFinanceOperation_none: FinanceOperationWhereInput
+  _MagicalBackRelation_ExpenseCategoryToFinanceOperationRaw_every: FinanceOperationRawWhereInput
+  _MagicalBackRelation_ExpenseCategoryToFinanceOperationRaw_some: FinanceOperationRawWhereInput
+  _MagicalBackRelation_ExpenseCategoryToFinanceOperationRaw_none: FinanceOperationRawWhereInput
 }
 
 input ExpenseCategoryWhereUniqueInput {
   id: ID
 }
 
-type FinanceOperation implements Node {
+type FinanceOperationRaw implements Node {
   id: ID!
   amount: Float!
   date: DateTime!
@@ -618,16 +618,16 @@ type FinanceOperation implements Node {
 }
 
 """A connection to a list of items."""
-type FinanceOperationConnection {
+type FinanceOperationRawConnection {
   """Information to aid in pagination."""
   pageInfo: PageInfo!
 
   """A list of edges."""
-  edges: [FinanceOperationEdge]!
-  aggregate: AggregateFinanceOperation!
+  edges: [FinanceOperationRawEdge]!
+  aggregate: AggregateFinanceOperationRaw!
 }
 
-input FinanceOperationCreateInput {
+input FinanceOperationRawCreateInput {
   amount: Float!
   date: DateTime!
   comment: String
@@ -640,17 +640,17 @@ input FinanceOperationCreateInput {
   transfer_toAccount: AccountCreateOneInput
 }
 
-input FinanceOperationCreateManyWithoutAccountInput {
-  create: [FinanceOperationCreateWithoutAccountInput!]
-  connect: [FinanceOperationWhereUniqueInput!]
+input FinanceOperationRawCreateManyWithoutAccountInput {
+  create: [FinanceOperationRawCreateWithoutAccountInput!]
+  connect: [FinanceOperationRawWhereUniqueInput!]
 }
 
-input FinanceOperationCreateManyWithoutOwnerInput {
-  create: [FinanceOperationCreateWithoutOwnerInput!]
-  connect: [FinanceOperationWhereUniqueInput!]
+input FinanceOperationRawCreateManyWithoutOwnerInput {
+  create: [FinanceOperationRawCreateWithoutOwnerInput!]
+  connect: [FinanceOperationRawWhereUniqueInput!]
 }
 
-input FinanceOperationCreateWithoutAccountInput {
+input FinanceOperationRawCreateWithoutAccountInput {
   amount: Float!
   date: DateTime!
   comment: String
@@ -662,7 +662,7 @@ input FinanceOperationCreateWithoutAccountInput {
   transfer_toAccount: AccountCreateOneInput
 }
 
-input FinanceOperationCreateWithoutOwnerInput {
+input FinanceOperationRawCreateWithoutOwnerInput {
   amount: Float!
   date: DateTime!
   comment: String
@@ -675,15 +675,15 @@ input FinanceOperationCreateWithoutOwnerInput {
 }
 
 """An edge in a connection."""
-type FinanceOperationEdge {
+type FinanceOperationRawEdge {
   """The item at the end of the edge."""
-  node: FinanceOperation!
+  node: FinanceOperationRaw!
 
   """A cursor for use in pagination."""
   cursor: String!
 }
 
-enum FinanceOperationOrderByInput {
+enum FinanceOperationRawOrderByInput {
   id_ASC
   id_DESC
   amount_ASC
@@ -702,7 +702,7 @@ enum FinanceOperationOrderByInput {
   createdAt_DESC
 }
 
-type FinanceOperationPreviousValues {
+type FinanceOperationRawPreviousValues {
   id: ID!
   amount: Float!
   date: DateTime!
@@ -711,22 +711,22 @@ type FinanceOperationPreviousValues {
   income_place: String
 }
 
-type FinanceOperationSubscriptionPayload {
+type FinanceOperationRawSubscriptionPayload {
   mutation: MutationType!
-  node: FinanceOperation
+  node: FinanceOperationRaw
   updatedFields: [String!]
-  previousValues: FinanceOperationPreviousValues
+  previousValues: FinanceOperationRawPreviousValues
 }
 
-input FinanceOperationSubscriptionWhereInput {
+input FinanceOperationRawSubscriptionWhereInput {
   """Logical AND on all given filters."""
-  AND: [FinanceOperationSubscriptionWhereInput!]
+  AND: [FinanceOperationRawSubscriptionWhereInput!]
 
   """Logical OR on all given filters."""
-  OR: [FinanceOperationSubscriptionWhereInput!]
+  OR: [FinanceOperationRawSubscriptionWhereInput!]
 
   """Logical NOT on all given filters combined by AND."""
-  NOT: [FinanceOperationSubscriptionWhereInput!]
+  NOT: [FinanceOperationRawSubscriptionWhereInput!]
 
   """
   The subscription event gets dispatched when it's listed in mutation_in
@@ -747,10 +747,10 @@ input FinanceOperationSubscriptionWhereInput {
   The subscription event gets only dispatched when some of the field names included in this list have been updated
   """
   updatedFields_contains_some: [String!]
-  node: FinanceOperationWhereInput
+  node: FinanceOperationRawWhereInput
 }
 
-input FinanceOperationUpdateInput {
+input FinanceOperationRawUpdateInput {
   amount: Float
   date: DateTime
   comment: String
@@ -763,25 +763,25 @@ input FinanceOperationUpdateInput {
   transfer_toAccount: AccountUpdateOneInput
 }
 
-input FinanceOperationUpdateManyWithoutAccountInput {
-  create: [FinanceOperationCreateWithoutAccountInput!]
-  connect: [FinanceOperationWhereUniqueInput!]
-  disconnect: [FinanceOperationWhereUniqueInput!]
-  delete: [FinanceOperationWhereUniqueInput!]
-  update: [FinanceOperationUpdateWithWhereUniqueWithoutAccountInput!]
-  upsert: [FinanceOperationUpsertWithWhereUniqueWithoutAccountInput!]
+input FinanceOperationRawUpdateManyWithoutAccountInput {
+  create: [FinanceOperationRawCreateWithoutAccountInput!]
+  connect: [FinanceOperationRawWhereUniqueInput!]
+  disconnect: [FinanceOperationRawWhereUniqueInput!]
+  delete: [FinanceOperationRawWhereUniqueInput!]
+  update: [FinanceOperationRawUpdateWithWhereUniqueWithoutAccountInput!]
+  upsert: [FinanceOperationRawUpsertWithWhereUniqueWithoutAccountInput!]
 }
 
-input FinanceOperationUpdateManyWithoutOwnerInput {
-  create: [FinanceOperationCreateWithoutOwnerInput!]
-  connect: [FinanceOperationWhereUniqueInput!]
-  disconnect: [FinanceOperationWhereUniqueInput!]
-  delete: [FinanceOperationWhereUniqueInput!]
-  update: [FinanceOperationUpdateWithWhereUniqueWithoutOwnerInput!]
-  upsert: [FinanceOperationUpsertWithWhereUniqueWithoutOwnerInput!]
+input FinanceOperationRawUpdateManyWithoutOwnerInput {
+  create: [FinanceOperationRawCreateWithoutOwnerInput!]
+  connect: [FinanceOperationRawWhereUniqueInput!]
+  disconnect: [FinanceOperationRawWhereUniqueInput!]
+  delete: [FinanceOperationRawWhereUniqueInput!]
+  update: [FinanceOperationRawUpdateWithWhereUniqueWithoutOwnerInput!]
+  upsert: [FinanceOperationRawUpsertWithWhereUniqueWithoutOwnerInput!]
 }
 
-input FinanceOperationUpdateWithoutAccountDataInput {
+input FinanceOperationRawUpdateWithoutAccountDataInput {
   amount: Float
   date: DateTime
   comment: String
@@ -793,7 +793,7 @@ input FinanceOperationUpdateWithoutAccountDataInput {
   transfer_toAccount: AccountUpdateOneInput
 }
 
-input FinanceOperationUpdateWithoutOwnerDataInput {
+input FinanceOperationRawUpdateWithoutOwnerDataInput {
   amount: Float
   date: DateTime
   comment: String
@@ -805,37 +805,37 @@ input FinanceOperationUpdateWithoutOwnerDataInput {
   transfer_toAccount: AccountUpdateOneInput
 }
 
-input FinanceOperationUpdateWithWhereUniqueWithoutAccountInput {
-  where: FinanceOperationWhereUniqueInput!
-  data: FinanceOperationUpdateWithoutAccountDataInput!
+input FinanceOperationRawUpdateWithWhereUniqueWithoutAccountInput {
+  where: FinanceOperationRawWhereUniqueInput!
+  data: FinanceOperationRawUpdateWithoutAccountDataInput!
 }
 
-input FinanceOperationUpdateWithWhereUniqueWithoutOwnerInput {
-  where: FinanceOperationWhereUniqueInput!
-  data: FinanceOperationUpdateWithoutOwnerDataInput!
+input FinanceOperationRawUpdateWithWhereUniqueWithoutOwnerInput {
+  where: FinanceOperationRawWhereUniqueInput!
+  data: FinanceOperationRawUpdateWithoutOwnerDataInput!
 }
 
-input FinanceOperationUpsertWithWhereUniqueWithoutAccountInput {
-  where: FinanceOperationWhereUniqueInput!
-  update: FinanceOperationUpdateWithoutAccountDataInput!
-  create: FinanceOperationCreateWithoutAccountInput!
+input FinanceOperationRawUpsertWithWhereUniqueWithoutAccountInput {
+  where: FinanceOperationRawWhereUniqueInput!
+  update: FinanceOperationRawUpdateWithoutAccountDataInput!
+  create: FinanceOperationRawCreateWithoutAccountInput!
 }
 
-input FinanceOperationUpsertWithWhereUniqueWithoutOwnerInput {
-  where: FinanceOperationWhereUniqueInput!
-  update: FinanceOperationUpdateWithoutOwnerDataInput!
-  create: FinanceOperationCreateWithoutOwnerInput!
+input FinanceOperationRawUpsertWithWhereUniqueWithoutOwnerInput {
+  where: FinanceOperationRawWhereUniqueInput!
+  update: FinanceOperationRawUpdateWithoutOwnerDataInput!
+  create: FinanceOperationRawCreateWithoutOwnerInput!
 }
 
-input FinanceOperationWhereInput {
+input FinanceOperationRawWhereInput {
   """Logical AND on all given filters."""
-  AND: [FinanceOperationWhereInput!]
+  AND: [FinanceOperationRawWhereInput!]
 
   """Logical OR on all given filters."""
-  OR: [FinanceOperationWhereInput!]
+  OR: [FinanceOperationRawWhereInput!]
 
   """Logical NOT on all given filters combined by AND."""
-  NOT: [FinanceOperationWhereInput!]
+  NOT: [FinanceOperationRawWhereInput!]
   id: ID
 
   """All values that are not equal to given value."""
@@ -1047,7 +1047,7 @@ input FinanceOperationWhereInput {
   transfer_toAccount: AccountWhereInput
 }
 
-input FinanceOperationWhereUniqueInput {
+input FinanceOperationRawWhereUniqueInput {
   id: ID
 }
 
@@ -1301,9 +1301,9 @@ input IncomeCategoryWhereInput {
   """All values that are not equal to given value."""
   mandatory_not: Boolean
   owner: UserWhereInput
-  _MagicalBackRelation_FinanceOperationToIncomeCategory_every: FinanceOperationWhereInput
-  _MagicalBackRelation_FinanceOperationToIncomeCategory_some: FinanceOperationWhereInput
-  _MagicalBackRelation_FinanceOperationToIncomeCategory_none: FinanceOperationWhereInput
+  _MagicalBackRelation_FinanceOperationRawToIncomeCategory_every: FinanceOperationRawWhereInput
+  _MagicalBackRelation_FinanceOperationRawToIncomeCategory_some: FinanceOperationRawWhereInput
+  _MagicalBackRelation_FinanceOperationRawToIncomeCategory_none: FinanceOperationRawWhereInput
 }
 
 input IncomeCategoryWhereUniqueInput {
@@ -1318,35 +1318,35 @@ scalar Long
 
 type Mutation {
   createUser(data: UserCreateInput!): User!
-  createFinanceOperation(data: FinanceOperationCreateInput!): FinanceOperation!
-  createIncomeCategory(data: IncomeCategoryCreateInput!): IncomeCategory!
+  createFinanceOperationRaw(data: FinanceOperationRawCreateInput!): FinanceOperationRaw!
   createExpenseCategory(data: ExpenseCategoryCreateInput!): ExpenseCategory!
   createAccount(data: AccountCreateInput!): Account!
+  createIncomeCategory(data: IncomeCategoryCreateInput!): IncomeCategory!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
-  updateFinanceOperation(data: FinanceOperationUpdateInput!, where: FinanceOperationWhereUniqueInput!): FinanceOperation
-  updateIncomeCategory(data: IncomeCategoryUpdateInput!, where: IncomeCategoryWhereUniqueInput!): IncomeCategory
+  updateFinanceOperationRaw(data: FinanceOperationRawUpdateInput!, where: FinanceOperationRawWhereUniqueInput!): FinanceOperationRaw
   updateExpenseCategory(data: ExpenseCategoryUpdateInput!, where: ExpenseCategoryWhereUniqueInput!): ExpenseCategory
   updateAccount(data: AccountUpdateInput!, where: AccountWhereUniqueInput!): Account
+  updateIncomeCategory(data: IncomeCategoryUpdateInput!, where: IncomeCategoryWhereUniqueInput!): IncomeCategory
   deleteUser(where: UserWhereUniqueInput!): User
-  deleteFinanceOperation(where: FinanceOperationWhereUniqueInput!): FinanceOperation
-  deleteIncomeCategory(where: IncomeCategoryWhereUniqueInput!): IncomeCategory
+  deleteFinanceOperationRaw(where: FinanceOperationRawWhereUniqueInput!): FinanceOperationRaw
   deleteExpenseCategory(where: ExpenseCategoryWhereUniqueInput!): ExpenseCategory
   deleteAccount(where: AccountWhereUniqueInput!): Account
+  deleteIncomeCategory(where: IncomeCategoryWhereUniqueInput!): IncomeCategory
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
-  upsertFinanceOperation(where: FinanceOperationWhereUniqueInput!, create: FinanceOperationCreateInput!, update: FinanceOperationUpdateInput!): FinanceOperation!
-  upsertIncomeCategory(where: IncomeCategoryWhereUniqueInput!, create: IncomeCategoryCreateInput!, update: IncomeCategoryUpdateInput!): IncomeCategory!
+  upsertFinanceOperationRaw(where: FinanceOperationRawWhereUniqueInput!, create: FinanceOperationRawCreateInput!, update: FinanceOperationRawUpdateInput!): FinanceOperationRaw!
   upsertExpenseCategory(where: ExpenseCategoryWhereUniqueInput!, create: ExpenseCategoryCreateInput!, update: ExpenseCategoryUpdateInput!): ExpenseCategory!
   upsertAccount(where: AccountWhereUniqueInput!, create: AccountCreateInput!, update: AccountUpdateInput!): Account!
+  upsertIncomeCategory(where: IncomeCategoryWhereUniqueInput!, create: IncomeCategoryCreateInput!, update: IncomeCategoryUpdateInput!): IncomeCategory!
   updateManyUsers(data: UserUpdateInput!, where: UserWhereInput): BatchPayload!
-  updateManyFinanceOperations(data: FinanceOperationUpdateInput!, where: FinanceOperationWhereInput): BatchPayload!
-  updateManyIncomeCategories(data: IncomeCategoryUpdateInput!, where: IncomeCategoryWhereInput): BatchPayload!
+  updateManyFinanceOperationRaws(data: FinanceOperationRawUpdateInput!, where: FinanceOperationRawWhereInput): BatchPayload!
   updateManyExpenseCategories(data: ExpenseCategoryUpdateInput!, where: ExpenseCategoryWhereInput): BatchPayload!
   updateManyAccounts(data: AccountUpdateInput!, where: AccountWhereInput): BatchPayload!
+  updateManyIncomeCategories(data: IncomeCategoryUpdateInput!, where: IncomeCategoryWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
-  deleteManyFinanceOperations(where: FinanceOperationWhereInput): BatchPayload!
-  deleteManyIncomeCategories(where: IncomeCategoryWhereInput): BatchPayload!
+  deleteManyFinanceOperationRaws(where: FinanceOperationRawWhereInput): BatchPayload!
   deleteManyExpenseCategories(where: ExpenseCategoryWhereInput): BatchPayload!
   deleteManyAccounts(where: AccountWhereInput): BatchPayload!
+  deleteManyIncomeCategories(where: IncomeCategoryWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -1378,20 +1378,20 @@ type PageInfo {
 
 type Query {
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
-  financeOperations(where: FinanceOperationWhereInput, orderBy: FinanceOperationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [FinanceOperation]!
-  incomeCategories(where: IncomeCategoryWhereInput, orderBy: IncomeCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [IncomeCategory]!
+  financeOperationRaws(where: FinanceOperationRawWhereInput, orderBy: FinanceOperationRawOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [FinanceOperationRaw]!
   expenseCategories(where: ExpenseCategoryWhereInput, orderBy: ExpenseCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ExpenseCategory]!
   accounts(where: AccountWhereInput, orderBy: AccountOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Account]!
+  incomeCategories(where: IncomeCategoryWhereInput, orderBy: IncomeCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [IncomeCategory]!
   user(where: UserWhereUniqueInput!): User
-  financeOperation(where: FinanceOperationWhereUniqueInput!): FinanceOperation
-  incomeCategory(where: IncomeCategoryWhereUniqueInput!): IncomeCategory
+  financeOperationRaw(where: FinanceOperationRawWhereUniqueInput!): FinanceOperationRaw
   expenseCategory(where: ExpenseCategoryWhereUniqueInput!): ExpenseCategory
   account(where: AccountWhereUniqueInput!): Account
+  incomeCategory(where: IncomeCategoryWhereUniqueInput!): IncomeCategory
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
-  financeOperationsConnection(where: FinanceOperationWhereInput, orderBy: FinanceOperationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FinanceOperationConnection!
-  incomeCategoriesConnection(where: IncomeCategoryWhereInput, orderBy: IncomeCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): IncomeCategoryConnection!
+  financeOperationRawsConnection(where: FinanceOperationRawWhereInput, orderBy: FinanceOperationRawOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FinanceOperationRawConnection!
   expenseCategoriesConnection(where: ExpenseCategoryWhereInput, orderBy: ExpenseCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ExpenseCategoryConnection!
   accountsConnection(where: AccountWhereInput, orderBy: AccountOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AccountConnection!
+  incomeCategoriesConnection(where: IncomeCategoryWhereInput, orderBy: IncomeCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): IncomeCategoryConnection!
 
   """Fetches an object given its ID"""
   node(
@@ -1402,10 +1402,10 @@ type Query {
 
 type Subscription {
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
-  financeOperation(where: FinanceOperationSubscriptionWhereInput): FinanceOperationSubscriptionPayload
-  incomeCategory(where: IncomeCategorySubscriptionWhereInput): IncomeCategorySubscriptionPayload
+  financeOperationRaw(where: FinanceOperationRawSubscriptionWhereInput): FinanceOperationRawSubscriptionPayload
   expenseCategory(where: ExpenseCategorySubscriptionWhereInput): ExpenseCategorySubscriptionPayload
   account(where: AccountSubscriptionWhereInput): AccountSubscriptionPayload
+  incomeCategory(where: IncomeCategorySubscriptionWhereInput): IncomeCategorySubscriptionPayload
 }
 
 type User implements Node {
@@ -1413,7 +1413,7 @@ type User implements Node {
   phone: String!
   name: String
   accounts(where: AccountWhereInput, orderBy: AccountOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Account!]
-  financeOperations(where: FinanceOperationWhereInput, orderBy: FinanceOperationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [FinanceOperation!]
+  financeOperations(where: FinanceOperationRawWhereInput, orderBy: FinanceOperationRawOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [FinanceOperationRaw!]
   incomeCategories(where: IncomeCategoryWhereInput, orderBy: IncomeCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [IncomeCategory!]
   expenseCategories(where: ExpenseCategoryWhereInput, orderBy: ExpenseCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ExpenseCategory!]
 }
@@ -1432,7 +1432,7 @@ input UserCreateInput {
   phone: String!
   name: String
   accounts: AccountCreateManyWithoutOwnerInput
-  financeOperations: FinanceOperationCreateManyWithoutOwnerInput
+  financeOperations: FinanceOperationRawCreateManyWithoutOwnerInput
   incomeCategories: IncomeCategoryCreateManyWithoutOwnerInput
   expenseCategories: ExpenseCategoryCreateManyWithoutOwnerInput
 }
@@ -1460,7 +1460,7 @@ input UserCreateOneWithoutIncomeCategoriesInput {
 input UserCreateWithoutAccountsInput {
   phone: String!
   name: String
-  financeOperations: FinanceOperationCreateManyWithoutOwnerInput
+  financeOperations: FinanceOperationRawCreateManyWithoutOwnerInput
   incomeCategories: IncomeCategoryCreateManyWithoutOwnerInput
   expenseCategories: ExpenseCategoryCreateManyWithoutOwnerInput
 }
@@ -1469,7 +1469,7 @@ input UserCreateWithoutExpenseCategoriesInput {
   phone: String!
   name: String
   accounts: AccountCreateManyWithoutOwnerInput
-  financeOperations: FinanceOperationCreateManyWithoutOwnerInput
+  financeOperations: FinanceOperationRawCreateManyWithoutOwnerInput
   incomeCategories: IncomeCategoryCreateManyWithoutOwnerInput
 }
 
@@ -1485,7 +1485,7 @@ input UserCreateWithoutIncomeCategoriesInput {
   phone: String!
   name: String
   accounts: AccountCreateManyWithoutOwnerInput
-  financeOperations: FinanceOperationCreateManyWithoutOwnerInput
+  financeOperations: FinanceOperationRawCreateManyWithoutOwnerInput
   expenseCategories: ExpenseCategoryCreateManyWithoutOwnerInput
 }
 
@@ -1560,7 +1560,7 @@ input UserUpdateInput {
   phone: String
   name: String
   accounts: AccountUpdateManyWithoutOwnerInput
-  financeOperations: FinanceOperationUpdateManyWithoutOwnerInput
+  financeOperations: FinanceOperationRawUpdateManyWithoutOwnerInput
   incomeCategories: IncomeCategoryUpdateManyWithoutOwnerInput
   expenseCategories: ExpenseCategoryUpdateManyWithoutOwnerInput
 }
@@ -1602,7 +1602,7 @@ input UserUpdateOneWithoutIncomeCategoriesInput {
 input UserUpdateWithoutAccountsDataInput {
   phone: String
   name: String
-  financeOperations: FinanceOperationUpdateManyWithoutOwnerInput
+  financeOperations: FinanceOperationRawUpdateManyWithoutOwnerInput
   incomeCategories: IncomeCategoryUpdateManyWithoutOwnerInput
   expenseCategories: ExpenseCategoryUpdateManyWithoutOwnerInput
 }
@@ -1611,7 +1611,7 @@ input UserUpdateWithoutExpenseCategoriesDataInput {
   phone: String
   name: String
   accounts: AccountUpdateManyWithoutOwnerInput
-  financeOperations: FinanceOperationUpdateManyWithoutOwnerInput
+  financeOperations: FinanceOperationRawUpdateManyWithoutOwnerInput
   incomeCategories: IncomeCategoryUpdateManyWithoutOwnerInput
 }
 
@@ -1627,7 +1627,7 @@ input UserUpdateWithoutIncomeCategoriesDataInput {
   phone: String
   name: String
   accounts: AccountUpdateManyWithoutOwnerInput
-  financeOperations: FinanceOperationUpdateManyWithoutOwnerInput
+  financeOperations: FinanceOperationRawUpdateManyWithoutOwnerInput
   expenseCategories: ExpenseCategoryUpdateManyWithoutOwnerInput
 }
 
@@ -1783,9 +1783,9 @@ input UserWhereInput {
   accounts_every: AccountWhereInput
   accounts_some: AccountWhereInput
   accounts_none: AccountWhereInput
-  financeOperations_every: FinanceOperationWhereInput
-  financeOperations_some: FinanceOperationWhereInput
-  financeOperations_none: FinanceOperationWhereInput
+  financeOperations_every: FinanceOperationRawWhereInput
+  financeOperations_some: FinanceOperationRawWhereInput
+  financeOperations_none: FinanceOperationRawWhereInput
   incomeCategories_every: IncomeCategoryWhereInput
   incomeCategories_some: IncomeCategoryWhereInput
   incomeCategories_none: IncomeCategoryWhereInput

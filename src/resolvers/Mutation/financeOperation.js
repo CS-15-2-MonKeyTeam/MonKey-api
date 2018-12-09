@@ -21,7 +21,7 @@ function resolveType(fo) {
 const financeOperation = {
   async deleteFinanceOperation(parent, { id }, ctx, info) {
     const userId = getUserId(ctx);
-    const fo = await ctx.db.query.financeOperation(
+    const fo = await ctx.db.query.financeOperationRaw(
       { where: { id } },
       '{ id amount expense_payee income_place owner { id } account { id balance } transfer_toAccount { id balance } }'
     );

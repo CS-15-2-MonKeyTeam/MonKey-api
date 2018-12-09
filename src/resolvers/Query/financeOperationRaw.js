@@ -1,16 +1,8 @@
-const R = require('ramda');
 const moment = require('moment');
 const { getUserId } = require('../../utils');
-const { makeSelectionList, formatPrimitiveFields } = require('../interfaces');
 
-const makeSelection = info =>
-  R.compose(
-    fields => `{ ${R.join(' ')(fields)} }`,
-    makeSelectionList
-  )(info);
-
-const financeOperation = {
-  financeOperations(
+const financeOperationsRaw = {
+  financeOperationsRaw(
     parent,
     { type, categoryId, date, skip, after, before, first, last },
     ctx,
@@ -61,21 +53,19 @@ const financeOperation = {
       );
     }
 
-    return ctx.db.query
-      .financeOperationRaws(
-        {
-          where,
-          orderBy: 'date_DESC',
-          skip,
-          after,
-          before,
-          first,
-          last
-        },
-        makeSelection(info)
-      )
-      .then(R.map(formatPrimitiveFields));
+    return ctx.db.query.financeOperationRaws(
+      {
+        where,
+        orderBy: 'date_DESC',
+        skip,
+        after,
+        before,
+        first,
+        last
+      },
+      info
+    );
   }
 };
 
-module.exports = financeOperation;
+module.exports = financeOperationsRaw;
