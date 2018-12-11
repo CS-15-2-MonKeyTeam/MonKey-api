@@ -119,7 +119,7 @@ const expense = {
     ]);
 
     return ctx.db.mutation
-      .updateFinanceOperation(
+      .updateFinanceOperationRaw(
         {
           where: { id },
           data: {

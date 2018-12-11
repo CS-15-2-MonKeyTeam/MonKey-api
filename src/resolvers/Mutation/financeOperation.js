@@ -52,7 +52,7 @@ const financeOperation = {
     });
 
     return ctx.db.mutation
-      .deleteFinanceOperation({ where: { id } }, makeSelection(info))
+      .deleteFinanceOperationRaw({ where: { id } }, makeSelection(info))
       .then(formatPrimitiveFields);
   }
 };

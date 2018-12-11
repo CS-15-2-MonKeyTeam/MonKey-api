@@ -59,7 +59,7 @@ const transfer = {
       throw new Error('Amount should be greater then 0.');
     }
 
-    const fo = await ctx.db.query.financeOperation(
+    const fo = await ctx.db.query.financeOperationRaw(
       { where: { id } },
       '{ id amount owner { id } account { id balance } toAccount { id } }'
     );
@@ -136,7 +136,7 @@ const transfer = {
     ]);
 
     return ctx.db.mutation
-      .updateFinanceOperation(
+      .updateFinanceOperationRaw(
         {
           where: { id },
           data: {
