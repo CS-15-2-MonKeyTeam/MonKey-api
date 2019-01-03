@@ -1,4 +1,5 @@
 const R = require('ramda');
+const moment = require('moment');
 const { makeSelectionList, formatPrimitiveFields } = require('../interfaces');
 const { getUserId } = require('../../utils');
 
@@ -10,7 +11,12 @@ const makeSelection = info =>
   )(info);
 
 const transfer = {
-  async createTransfer(parent, { amount, accountId, date, comment, toAccountId }, ctx, info) {
+  async createTransfer(
+    parent,
+    { amount, accountId, date = moment().format(), comment, toAccountId },
+    ctx,
+    info
+  ) {
     const userId = getUserId(ctx);
 
     if (amount <= 0) throw new Error('Amount should be greater then 0.');
@@ -61,7 +67,7 @@ const transfer = {
 
     const fo = await ctx.db.query.financeOperationRaw(
       { where: { id } },
-      '{ id amount owner { id } account { id balance } toAccount { id } }'
+      '{ id date amount owner { id } account { id balance } toAccount { id } }'
     );
 
     if (!fo || fo.owner.id !== userId || !fo.toAccount) {
@@ -141,7 +147,7 @@ const transfer = {
           where: { id },
           data: {
             amount,
-            date,
+            date: date || fo.date,
             comment,
             account: accountId && { connect: { id: accountId } },
             transfer_toAccount: toAccountId && { connect: { id: toAccountId } }

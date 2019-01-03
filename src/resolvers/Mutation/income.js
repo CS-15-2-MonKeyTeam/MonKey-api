@@ -1,4 +1,5 @@
 const R = require('ramda');
+const moment = require('moment');
 const { makeSelectionList, formatPrimitiveFields } = require('../interfaces');
 const { getUserId } = require('../../utils');
 
@@ -17,7 +18,7 @@ const makeSelection = info =>
 const income = {
   async createIncome(
     parent,
-    { amount, accountId, date, comment, place = '', categoryId },
+    { amount, accountId, date = moment().format(), comment, place = '', categoryId },
     ctx,
     info
   ) {
@@ -79,7 +80,7 @@ const income = {
 
     const fo = await ctx.db.query.financeOperationRaw(
       { where: { id } },
-      '{ id amount income_place owner { id } account { id balance } }'
+      '{ id date amount income_place owner { id } account { id balance } }'
     );
     if (!fo || fo.owner.id !== userId || typeof fo.income_place !== 'string') {
       throw new Error('Income not found.');
@@ -124,7 +125,7 @@ const income = {
           where: { id },
           data: {
             amount,
-            date,
+            date: date || fo.date,
             comment,
             account: accountId && { connect: { id: accountId } },
             income_place: place,
