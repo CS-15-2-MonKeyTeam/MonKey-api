@@ -128,7 +128,7 @@ const expense = {
             date: date || fo.date,
             comment,
             account: accountId && { connect: { id: accountId } },
-            expense_payee: payee,
+            expense_payee: typeof payee === 'string' ? payee : fo.expense_payee,
             expense_category: categoryId && { connect: { id: categoryId } }
           }
         },

@@ -128,7 +128,7 @@ const income = {
             date: date || fo.date,
             comment,
             account: accountId && { connect: { id: accountId } },
-            income_place: place,
+            income_place: typeof place === 'string' ? place : fo.income_place,
             income_category: categoryId && { connect: { id: categoryId } }
           }
         },
