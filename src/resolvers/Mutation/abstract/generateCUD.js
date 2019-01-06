@@ -1,14 +1,16 @@
+const R = require('ramda');
+
 const { getUserId } = require('../../../utils');
 
-function generateCUD(categoryName) {
-  const notFoundErrorText = `${categoryName
+function generateCUD(entityName) {
+  const notFoundErrorText = `${entityName
     .replace(/([A-Z])/g, ' $1')
     .slice(1)} not found or you're not the owner.`;
 
   return {
-    [`create${categoryName}`]: (parent, data, ctx, info) => {
+    [`create${entityName}`]: (parent, data, ctx, info) => {
       const id = getUserId(ctx);
-      return ctx.db.mutation[`create${categoryName}`](
+      return ctx.db.mutation[`create${entityName}`](
         {
           data: { ...data, owner: { connect: { id } } }
         },
@@ -16,31 +18,31 @@ function generateCUD(categoryName) {
       );
     },
 
-    [`update${categoryName}`]: async (parent, data, ctx, info) => {
+    [`update${entityName}`]: async (parent, data, ctx, info) => {
       const userId = getUserId(ctx);
       const { id } = data;
-      const accountExists = await ctx.db.exists[categoryName]({ id, owner: { id: userId } });
+      const accountExists = await ctx.db.exists[entityName]({ id, owner: { id: userId } });
       if (!accountExists) {
         throw new Error(notFoundErrorText);
       }
 
-      return ctx.db.mutation[`update$${categoryName}`](
+      return ctx.db.mutation[`update${entityName}`](
         {
           where: { id },
-          data
+          data: R.omit(['id'], data)
         },
         info
       );
     },
 
-    [`delete${categoryName}`]: async (parent, { id }, ctx, info) => {
+    [`delete${entityName}`]: async (parent, { id }, ctx, info) => {
       const userId = getUserId(ctx);
-      const accountExists = await ctx.db.exists[categoryName]({ id, owner: { id: userId } });
+      const accountExists = await ctx.db.exists[entityName]({ id, owner: { id: userId } });
       if (!accountExists) {
         throw new Error(notFoundErrorText);
       }
 
-      return ctx.db.mutation[`delete${categoryName}`]({ where: { id } }, info);
+      return ctx.db.mutation[`delete${entityName}`]({ where: { id } }, info);
     }
   };
 }
