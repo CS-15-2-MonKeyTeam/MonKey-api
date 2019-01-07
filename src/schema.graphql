@@ -37,6 +37,7 @@ type Mutation {
   auth(accountkitAccessToken: String!, name: String): AuthPayload!
 
   updateProfile(name: String!): User!
+  deleteProfile: User!
 
   createExpenseCategory(name: String!, mandatory: Boolean): ExpenseCategory!
   updateExpenseCategory(name: String, mandatory: Boolean): ExpenseCategory!
